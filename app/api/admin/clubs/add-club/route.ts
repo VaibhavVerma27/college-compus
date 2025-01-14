@@ -2,7 +2,6 @@ import {NextRequest, NextResponse} from "next/server";
 import dbConnect from "../../../../../lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "../../../(auth)/auth/[...nextauth]/options";
-import mongoose from "mongoose";
 import {ClubModel, StudentModel} from "../../../../../model/User";
 
 export async function POST(req: NextRequest) {

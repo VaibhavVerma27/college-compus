@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
-import { v4 as uuidv4 } from 'uuid'
+import { randomUUID as uuidv4 } from 'crypto';
+
 
 export interface User extends Document {
     username: string;

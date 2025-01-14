@@ -4,8 +4,7 @@ import Categories from "./Categories";
 import Logo from "./Logo";
 import UserMenu from "./UserMenu";
 
-interface NavbarProps {}
-const Navbar: React.FC<NavbarProps> = ({}) => {
+const Navbar = ({}) => {
   return (
     <div className="bg-black text-white p-4 sticky top-0 z-10 border-b-2 border-blue-500">
       <div

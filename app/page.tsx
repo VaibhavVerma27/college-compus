@@ -20,8 +20,8 @@ export default function HomePage() {
     } else {
       return (
         <>
-          <div>
-            wait for admin verification
+          <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white">
+            <div className="text-blue-500 text-4xl text-center font-bold pt-8">Wait for admin verification</div>
           </div>
         </>
       )

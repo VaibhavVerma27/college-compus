@@ -5,7 +5,7 @@ import {NextResponse} from "next/server";
 import mongoose from "mongoose";
 import  {StudentModel} from "../../../../model/User";
 
-export async function GET(req: Request) {
+export async function GET() {
   try {
     await dbConnect();
 

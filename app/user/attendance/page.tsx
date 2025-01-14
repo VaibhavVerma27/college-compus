@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { FaCalendarCheck } from "react-icons/fa";
 
 const StudentAttendancePage = () => {
   const { data: session } = useSession();

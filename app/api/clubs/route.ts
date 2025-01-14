@@ -4,7 +4,7 @@ import {authOptions} from "../(auth)/auth/[...nextauth]/options";
 import {NextResponse} from "next/server";
 import {ClubModel} from "../../../model/User";
 
-export async function GET(request: Request) {
+export async function GET() {
   try {
     await dbConnect();
 

@@ -5,8 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3d45d623-ee8a-421e-8d0d-07f88c3fd10c" name="Changes" comment="fixup! recovered files">
+      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(auth)/verify-sid/[username]/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/verify-sid/[username]/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/admin/clubs/add-club/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/admin/clubs/add-club/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/admin/subjects/teacher/add/[...teacherId]/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/admin/subjects/teacher/add/[...teacherId]/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/aichatbot/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/aichatbot/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/api/study-requests/my-requests/accept/[studyRequestId]/route.ts" beforeDir="false" afterPath="$PROJECT_DIR$/app/api/study-requests/my-requests/accept/[studyRequestId]/route.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/navbar/Avatar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/navbar/Avatar.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/navbar/Navbar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/navbar/Navbar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/calendar.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/calendar.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/embedding.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/embedding.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/model/User.ts" beforeDir="false" afterPath="$PROJECT_DIR$/model/User.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/next.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/next.config.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -193,7 +205,7 @@
       <workItem from="1736779876545" duration="17843000" />
       <workItem from="1736827225342" duration="2213000" />
       <workItem from="1736841852981" duration="1575000" />
-      <workItem from="1736869453749" duration="2436000" />
+      <workItem from="1736869453749" duration="7753000" />
     </task>
     <servers />
   </component>
