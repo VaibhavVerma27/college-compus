@@ -9,7 +9,6 @@ import FloatingChatbot from "../components/chatBot/chatBot";
 import Navbar from "@/components/navbar/Navbar";
 import ClientOnly from "@/components/ClientOnly";
 import { usePathname } from "next/navigation";
-import { metadata } from "./metadata"; // Import metadata
 
 const ArchivoBlack = localFont({
   src: "./fonts/ArchivoBlack-Regular.ttf",

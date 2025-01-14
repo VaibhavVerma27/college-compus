@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import axios from 'axios';
 import { useRouter, useParams } from 'next/navigation';
 import { CldUploadButton } from 'next-cloudinary';

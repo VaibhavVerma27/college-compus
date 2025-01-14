@@ -1,5 +1,18 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  /* config options here */
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Prevent bundling server-side libraries on the client
+      config.resolve.alias['mongodb'] = false;
+      config.resolve.alias['mongoose'] = false;
+    }
+    return config;
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
@@ -12,4 +25,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

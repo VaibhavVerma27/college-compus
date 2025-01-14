@@ -1,17 +1,15 @@
-import { NextRequest, NextResponse } from 'next/server';  // Use NextRequest and NextResponse
-import { getSession } from 'next-auth/react';
+import { NextResponse } from 'next/server';  // Use NextRequest and NextResponse
 import { TeacherModel, SubjectModel } from '@/model/User';
 import dbConnect from '@/lib/connectDb';
 import { authOptions } from '../../(auth)/auth/[...nextauth]/options';
-import { getServerSession, User } from 'next-auth';
+import { getServerSession } from 'next-auth';
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   try {
     await dbConnect();
     console.log('DB connection successful');
 
     const session = await getServerSession(authOptions);
-    const user: User = session?.user as User;
     console.log('Session:', session);
 
     if (!session || !session.user || !session.user._id) {

@@ -3,7 +3,7 @@ import { authOptions } from "../(auth)/auth/[...nextauth]/options";
 import { QdrantClient } from '@qdrant/js-client-rest';
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
-import { getServerSession, User } from "next-auth";
+import { getServerSession } from "next-auth";
 import { Student, StudentModel, TeacherModel, aiChatBotModel } from "../../../model/User";
 import { ObjectId } from "bson";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";

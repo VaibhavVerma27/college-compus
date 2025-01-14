@@ -1,5 +1,4 @@
 "use client"
-import mongoose from "mongoose";
 import {useRouter} from "next/navigation";
 
 interface props {

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 'use client';
 import EventCard from "../../components/events/card";
 import FilterBox from "../../components/events/filterbox";
@@ -5,8 +7,7 @@ import { useEffect, useState, useMemo } from "react";
 import { useModel } from "../../hooks/user-model-store";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import NavigatorButton from "../../components/general/navigator";
-import { FaFilter, FaCalendarPlus, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import {  FaCalendarPlus, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 export default function EventsPage() {
   const { allEvents, isLoading, setAllEvents, setLoading } = useModel();

@@ -1,5 +1,4 @@
 import React from "react";
-import Image from "next/image";
 import { FaUserCircle } from "react-icons/fa";
 function Avatar() {
   return (

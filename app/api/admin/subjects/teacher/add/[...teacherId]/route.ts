@@ -5,7 +5,7 @@ import {getServerSession, User} from "next-auth";
 import {authOptions} from "../../../../../(auth)/auth/[...nextauth]/options";
 import {NextResponse} from "next/server";
 import mongoose from "mongoose";
-import {ResourceModel, SubjectModel, Teacher, TeacherModel} from "../../../../../../../model/User";
+import {ResourceModel, SubjectModel, TeacherModel} from "../../../../../../../model/User";
 
 export async function POST(req: Request, { params }: { params: { teacherId: string[] } }) {
   try {

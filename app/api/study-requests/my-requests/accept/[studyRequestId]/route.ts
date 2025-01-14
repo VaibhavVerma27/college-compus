@@ -4,11 +4,10 @@ import {authOptions} from "@/app/api/(auth)/auth/[...nextauth]/options";
 import {NextResponse} from "next/server";
 import mongoose from "mongoose";
 import {AcceptedStudyRequestModel, RequestToTeachModel, StudyRequestModel} from "@/model/User";
-import {uuidV4} from "mongodb/src/utils";
+import { randomUUID as uuidV4 } from 'crypto';
 
 export async function PATCH(req: Request, { params }: { params: { studyRequestId: string[] } }) {
   try {
-    console.log("here");
     await dbConnect();
 
     const session = await getServerSession(authOptions);
