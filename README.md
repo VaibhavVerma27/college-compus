@@ -62,8 +62,8 @@ College Compus is your all-in-one college companion, developed for the ACM Ideat
 
 - **Frontend**: Next.js 15, TailwindCSS, Socket.io-client,
 - **Backend**: Node.js, Express.js, Websocket, Groq AI
-- **Database**: MongoDB, Qdrant Vector DB
-- **Authentication**: JWT, NextAuth.js, NodeMailer
+- **Database**: MongoDB, Qdrant Vector DB, Redis
+- **Authentication**: JWT, NextAuth.js, NodeMailer, Tesseract
 - **Maps**: OpenStreetMap
 - **Real-time**: WebSocket, Livekit
 
