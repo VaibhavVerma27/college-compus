@@ -3,12 +3,9 @@ import {EventModel, Student, StudentModel} from '../../../../model/User';
 import mongoose from "mongoose";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "../../(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 
-export async function GET(
-    req: Request,
-    { params }: { params: { eventId: string[] } }
-) {
+export async function GET(req: NextRequest) {
     try {
         await dbConnect();
 
@@ -21,25 +18,24 @@ export async function GET(
 
         const userId = new mongoose.Types.ObjectId(user._id);
 
-        const { eventId } = await params;
+      const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+      const eventId = segments[segments.length - 1];
 
-        if (!eventId.length) {
+        if (!eventId) {
             return new Response(
               JSON.stringify({ success: false, message: 'Event ID is required' }),
               { status: 400, headers: { 'Content-Type': 'application/json' } }
             );
         }
 
-        console.log(eventId);
-
-        if (!mongoose.Types.ObjectId.isValid(eventId[0])) {
+        if (!mongoose.Types.ObjectId.isValid(eventId)) {
             return new Response(
               JSON.stringify({ success: false, message: 'Invalid event ID' }),
               { status: 400, headers: { 'Content-Type': 'application/json' } }
             );
         }
 
-        const eventObjectId = new mongoose.Types.ObjectId(eventId[0])
+        const eventObjectId = new mongoose.Types.ObjectId(eventId)
 
         const student: Student|null = await StudentModel.findOne({user_id: userId});
 
@@ -123,10 +119,7 @@ export async function GET(
     }
 }
 
-export async function DELETE(
-    req: Request,
-    { params }: { params: { eventId: string[] } }
-  ) {
+export async function DELETE(req: NextRequest) {
     try {
       await dbConnect();
   
@@ -136,14 +129,15 @@ export async function DELETE(
       if (!session || !user) {
         return NextResponse.json({ error: 'Unauthorized. User must be logged in.' }, { status: 401 });
       }
-  
-      const { eventId } = params;
-  
-      if (!eventId.length || !mongoose.Types.ObjectId.isValid(eventId[0])) {
+
+      const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+      const eventId = segments[segments.length - 1];
+
+      if (!eventId || !mongoose.Types.ObjectId.isValid(eventId)) {
         return NextResponse.json({ error: 'Invalid or missing Event ID' }, { status: 400 });
       }
   
-      const eventObjectId = new mongoose.Types.ObjectId(eventId[0]);
+      const eventObjectId = new mongoose.Types.ObjectId(eventId);
   
       const deletedEvent = await EventModel.findByIdAndDelete(eventObjectId);
   
@@ -158,10 +152,7 @@ export async function DELETE(
     }
   }
 
-  export async function PATCH(
-    req: Request,
-    { params }: { params: { eventId: string[] } }
-  ) {
+  export async function PATCH(req: NextRequest) {
     try {
       await dbConnect();
   
@@ -171,14 +162,15 @@ export async function DELETE(
       if (!session || !user) {
         return NextResponse.json({ error: 'Unauthorized. User must be logged in.' }, { status: 401 });
       }
-  
-      const { eventId } = params;
-  
-      if (!eventId.length || !mongoose.Types.ObjectId.isValid(eventId[0])) {
+
+      const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+      const eventId = segments[segments.length - 1];
+
+      if (!eventId || !mongoose.Types.ObjectId.isValid(eventId)) {
         return NextResponse.json({ error: 'Invalid or missing Event ID' }, { status: 400 });
       }
   
-      const eventObjectId = new mongoose.Types.ObjectId(eventId[0]);
+      const eventObjectId = new mongoose.Types.ObjectId(eventId);
   
       const body = await req.json();
   

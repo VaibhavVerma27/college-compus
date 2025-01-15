@@ -1,4 +1,4 @@
-export default function Marks({type, marks}: { type: string, marks: string}) {
+export default function Marks({type, marks}: { type: string, marks: number}) {
 
   return (
     <>

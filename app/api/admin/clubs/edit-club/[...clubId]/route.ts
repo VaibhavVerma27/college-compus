@@ -5,7 +5,7 @@ import {authOptions} from "../../../../(auth)/auth/[...nextauth]/options";
 import mongoose from "mongoose";
 import {ClubModel, StudentModel} from "../../../../../../model/User";
 
-export async function PATCH(req: NextRequest,     { params }: { params: { clubId: string[] } }) {
+export async function PATCH(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -32,25 +32,24 @@ export async function PATCH(req: NextRequest,     { params }: { params: { clubId
       );
     }
 
-    const { clubId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const clubId = segments[segments.length - 1];
 
-    if (!clubId.length) {
+    if (!clubId) {
       return NextResponse.json(
         {error: 'Club ID is required'},
         {status: 403}
       )
     }
 
-    console.log(clubId);
-
-    if (!mongoose.Types.ObjectId.isValid(clubId[0])) {
+    if (!mongoose.Types.ObjectId.isValid(clubId)) {
       return NextResponse.json(
         {error: 'Club ID is invalid'},
         {status: 403}
       )
     }
 
-    const clubObjectId = new mongoose.Types.ObjectId(clubId[0])
+    const clubObjectId = new mongoose.Types.ObjectId(clubId)
 
     const club = await ClubModel.findById(clubObjectId);
 

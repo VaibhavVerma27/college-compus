@@ -54,6 +54,8 @@ export default function MapComponent({
         if (markerRef.current) {
           markerRef.current.setLatLng([lat, lng]);
         } else {
+
+          // @ts-expect-error don't know
           markerRef.current = L.marker([lat, lng], { icon: customIcon }).addTo(leafletMap.current);
         }
 

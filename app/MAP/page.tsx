@@ -1,7 +1,8 @@
+"use client"
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const OpenStreetMap = dynamic(() => import('../../components/map/ostm'), {});
+const OpenStreetMap = dynamic(() => import('../../components/map/ostm'), {ssr: false});
 
 const Index: React.FC = () => {
   return (

@@ -1,10 +1,10 @@
 import dbConnect from "../../../../../../lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "../../../../(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import {ResourceModel} from "../../../../../../model/User";
 
-export async function GET(req: Request, { params }: { params: { subjectId: string[] } }) {
+export async function GET(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -22,9 +22,10 @@ export async function GET(req: Request, { params }: { params: { subjectId: strin
       );
     }
 
-    const { subjectId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const subjectId = segments[segments.length - 1];
 
-    if (!subjectId || subjectId.length === 0) {
+    if (!subjectId) {
       return NextResponse.json(
         {error: 'No subjectId provided'},
         {status: 403}
@@ -34,7 +35,7 @@ export async function GET(req: Request, { params }: { params: { subjectId: strin
     const resources = await ResourceModel.aggregate([
       {
         $match: {
-          subjectId: subjectId[0],
+          subjectId: subjectId,
         }
       },
       {
@@ -64,7 +65,7 @@ export async function GET(req: Request, { params }: { params: { subjectId: strin
 
 
 //add a group in a subject
-export async function PATCH(req: Request, { params }: { params: { subjectId: string[] } }) {
+export async function PATCH(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -82,9 +83,10 @@ export async function PATCH(req: Request, { params }: { params: { subjectId: str
       );
     }
 
-    const { subjectId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const subjectId = segments[segments.length - 1];
 
-    if (!subjectId || subjectId.length === 0) {
+    if (!subjectId) {
       return NextResponse.json(
         {error: 'No subjectId provided'},
         {status: 403}
@@ -101,7 +103,7 @@ export async function PATCH(req: Request, { params }: { params: { subjectId: str
     }
 
     const resource = await ResourceModel.updateOne(
-      { subjectId: subjectId[0] },
+      { subjectId: subjectId },
       { $push: { files: file } }
     )
 
@@ -124,7 +126,7 @@ export async function PATCH(req: Request, { params }: { params: { subjectId: str
 
 
 //delete group  subjectId === groupId
-export async function DELETE(req: Request, { params }: { params: { subjectId: string[] } }) {
+export async function DELETE(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -142,9 +144,10 @@ export async function DELETE(req: Request, { params }: { params: { subjectId: st
       );
     }
 
-    const { subjectId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const subjectId = segments[segments.length - 1];
 
-    if (!subjectId || subjectId.length === 0) {
+    if (!subjectId) {
       return NextResponse.json(
         {error: 'No groupId provided'},
         {status: 403}
@@ -161,7 +164,7 @@ export async function DELETE(req: Request, { params }: { params: { subjectId: st
     }
 
     const resource = await ResourceModel.updateOne(
-      { subjectId: subjectId[0] },
+      { subjectId: subjectId },
       { $pull: { files: file } }
     )
 

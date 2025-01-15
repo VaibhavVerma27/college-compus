@@ -1,13 +1,11 @@
-//add new subject
-
 import dbConnect from "../../../../../../../lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "../../../../../(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import mongoose from "mongoose";
 import {ResourceModel, SubjectModel, TeacherModel} from "../../../../../../../model/User";
 
-export async function POST(req: Request, { params }: { params: { teacherId: string[] } }) {
+export async function POST(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -33,23 +31,25 @@ export async function POST(req: Request, { params }: { params: { teacherId: stri
         {status: 403}
       )
     }
-    const { teacherId } = await params;
 
-    if (!teacherId.length) {
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const teacherId = segments[segments.length - 1];
+
+    if (!teacherId) {
       return NextResponse.json(
         {error: 'No teacher id found.'},
         {status: 400}
       );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(teacherId[0])) {
+    if (!mongoose.Types.ObjectId.isValid(teacherId)) {
       return NextResponse.json(
         {error: 'Invalid teacher id'},
         {status: 400}
       );
     }
 
-    const teacherObjectId = new mongoose.Types.ObjectId(teacherId[0]);
+    const teacherObjectId = new mongoose.Types.ObjectId(teacherId);
 
     const teacher = await TeacherModel.updateOne(
       { _id: teacherObjectId },

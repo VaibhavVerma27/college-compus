@@ -1,12 +1,12 @@
 import dbConnect from "@/lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "@/app/api/(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import mongoose from "mongoose";
 import {RequestToTeachModel, StudyRequestModel} from "@/model/User";
 
 
-export async function GET(req: Request, {params} : {params: {requestToTeachId: string[]}}) {
+export async function GET(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -19,23 +19,24 @@ export async function GET(req: Request, {params} : {params: {requestToTeachId: s
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    const { requestToTeachId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const requestToTeachId = segments[segments.length - 1];
 
-    if (!requestToTeachId || requestToTeachId.length < 1) {
+    if (!requestToTeachId) {
       return NextResponse.json(
         { error: 'Study request id not found.' },
         { status: 403}
       );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(requestToTeachId[0])) {
+    if (!mongoose.Types.ObjectId.isValid(requestToTeachId)) {
       return NextResponse.json(
         { error: 'Study request id not valid.' },
         { status: 403 }
       );
     }
 
-    const requestToTeachObjectId = new mongoose.Types.ObjectId(requestToTeachId[0]);
+    const requestToTeachObjectId = new mongoose.Types.ObjectId(requestToTeachId);
 
     const requestToTeach = await RequestToTeachModel.findOne({_id: requestToTeachObjectId, user_id: userId});
 
@@ -51,7 +52,7 @@ export async function GET(req: Request, {params} : {params: {requestToTeachId: s
 }
 
 
-export async function PATCH(req: Request, {params} : {params: {requestToTeachId: string[]}}) {
+export async function PATCH(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -64,23 +65,24 @@ export async function PATCH(req: Request, {params} : {params: {requestToTeachId:
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    const { requestToTeachId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const requestToTeachId = segments[segments.length - 1];
 
-    if (!requestToTeachId || requestToTeachId.length < 1) {
+    if (!requestToTeachId) {
       return NextResponse.json(
         { error: 'Study request id not found.' },
         { status: 403}
       );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(requestToTeachId[0])) {
+    if (!mongoose.Types.ObjectId.isValid(requestToTeachId)) {
       return NextResponse.json(
         { error: 'Study request id not valid.' },
         { status: 403 }
       );
     }
 
-    const requestToTeachObjectId = new mongoose.Types.ObjectId(requestToTeachId[0]);
+    const requestToTeachObjectId = new mongoose.Types.ObjectId(requestToTeachId);
 
     const { description, phoneNumber, attachments } = await req.json();
 
@@ -107,7 +109,7 @@ export async function PATCH(req: Request, {params} : {params: {requestToTeachId:
 
 
 
-export async function DELETE(req: Request, {params} : {params: {requestToTeachId: string[]}}) {
+export async function DELETE(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -120,24 +122,27 @@ export async function DELETE(req: Request, {params} : {params: {requestToTeachId
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    const { requestToTeachId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const studyRequestId = segments[segments.length - 1];
+    const requestToTeachId = segments[segments.length - 2];
 
-    if (!requestToTeachId || requestToTeachId.length < 2) {
+
+    if (!requestToTeachId || !studyRequestId) {
       return NextResponse.json(
-        { error: 'Study request id not found.' },
+        { error: 'Study request id or request to teach not found.' },
         { status: 403}
       );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(requestToTeachId[0]) || !mongoose.Types.ObjectId.isValid(requestToTeachId[1])) {
+    if (!mongoose.Types.ObjectId.isValid(requestToTeachId) || !mongoose.Types.ObjectId.isValid(studyRequestId)) {
       return NextResponse.json(
         { error: 'Study request id not valid.' },
         { status: 403 }
       );
     }
 
-    const requestToTeachObjectId = new mongoose.Types.ObjectId(requestToTeachId[0]);
-    const studyRequestObjectId = new mongoose.Types.ObjectId(requestToTeachId[1]);
+    const requestToTeachObjectId = new mongoose.Types.ObjectId(requestToTeachId);
+    const studyRequestObjectId = new mongoose.Types.ObjectId(studyRequestId);
 
     const studyRequest = await StudyRequestModel.findByIdAndUpdate(studyRequestObjectId, {$pull: { applied: userId }});
 

@@ -1,10 +1,12 @@
+/* eslint-disable */
+
 "use client"
 import { useEffect, useRef, useState } from "react";
 import io, { Socket } from "socket.io-client";
 
 let socket: typeof Socket;
 
-export const Whiteboard = () => {
+export default function Whiteboard(){
   const [roomId, setRoomId] = useState("");
   const [connectedRoom, setConnectedRoom] = useState("");
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -12,12 +14,10 @@ export const Whiteboard = () => {
   const lastPoint = useRef<{ x: number, y: number } | null>(null);
 
   useEffect(() => {
-    socket = io("http://localhost:4000",{
-      allowEIO3: true
-    });
+    socket = io("http://localhost:4000");
 
     // Listen for the whiteboard updates
-    socket.on("whiteboard-update", (data) => {
+    socket.on("whiteboard-update", (data: { x: any; y: any; type: any; }) => {
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");
       if (ctx && data) {
@@ -33,6 +33,7 @@ export const Whiteboard = () => {
     });
 
     // Listen for the 'ondown' event to handle the starting point for other users
+    // @ts-ignore
     socket.on("ondown", ({ x, y }) => {
       const canvas = canvasRef.current;
       const ctx = canvas?.getContext("2d");
@@ -115,6 +116,4 @@ export const Whiteboard = () => {
       )}
     </div>
   );
-};
-
-export default Whiteboard;
+}

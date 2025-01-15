@@ -1,12 +1,12 @@
 import dbConnect from "@/lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "@/app/api/(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import mongoose from "mongoose";
 import {TeacherAnnouncementModel} from "@/model/User";
 
 
-export async function GET(req: Request, { params } : { params: { id: string[] } }) {
+export async function GET(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -26,23 +26,24 @@ export async function GET(req: Request, { params } : { params: { id: string[] } 
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    const {id} = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const id = segments[segments.length - 1];
 
-    if (!id.length) {
+    if (!id) {
       return NextResponse.json(
         {error: 'No id found.'},
         {status: 400}
       );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(id[0])) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
         {error: 'Invalid club id'},
         {status: 400}
       );
     }
 
-    const objectId = new mongoose.Types.ObjectId(id[0]);
+    const objectId = new mongoose.Types.ObjectId(id);
 
     const announcement = await TeacherAnnouncementModel.findOne({_id: objectId, teacherId: userId})
 
@@ -64,7 +65,7 @@ export async function GET(req: Request, { params } : { params: { id: string[] } 
 }
 
 
-export async function PATCH(req: Request, { params } : { params: { id: string[] } }) {
+export async function PATCH(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -84,23 +85,24 @@ export async function PATCH(req: Request, { params } : { params: { id: string[] 
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    const {id} = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const id = segments[segments.length - 1];
 
-    if (!id.length) {
+    if (!id) {
       return NextResponse.json(
         {error: 'No id found.'},
         {status: 400}
       );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(id[0])) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
         {error: 'Invalid club id'},
         {status: 400}
       );
     }
 
-    const objectId = new mongoose.Types.ObjectId(id[0]);
+    const objectId = new mongoose.Types.ObjectId(id);
 
     const { subjectCode, announcementText } = await req.json();
 
@@ -136,7 +138,7 @@ export async function PATCH(req: Request, { params } : { params: { id: string[] 
 }
 
 
-export async function DELETE(req: Request, { params } : { params: { id: string[] } }) {
+export async function DELETE(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -156,23 +158,24 @@ export async function DELETE(req: Request, { params } : { params: { id: string[]
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    const {id} = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const id = segments[segments.length - 1];
 
-    if (!id.length) {
+    if (!id) {
       return NextResponse.json(
         {error: 'No id found.'},
         {status: 400}
       );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(id[0])) {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json(
         {error: 'Invalid club id'},
         {status: 400}
       );
     }
 
-    const objectId = new mongoose.Types.ObjectId(id[0]);
+    const objectId = new mongoose.Types.ObjectId(id);
 
     const announcement = await TeacherAnnouncementModel.findOneAndDelete({ _id: objectId, teacherId: userId});
 

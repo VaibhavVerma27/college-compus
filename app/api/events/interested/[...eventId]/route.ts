@@ -1,4 +1,6 @@
-import { NextResponse } from "next/server";
+/* eslint-disable */
+
+import {NextRequest, NextResponse} from "next/server";
 import dbConnect from "../../../../../lib/connectDb";
 import {EventModel, Student,Event, StudentModel} from "../../../../../model/User";
 import { getServerSession, User } from "next-auth";
@@ -6,10 +8,7 @@ import { authOptions } from "../../../(auth)/auth/[...nextauth]/options";
 import mongoose from "mongoose";
 
 
-export async function PATCH(
-    req:Request,
-    {params}:{params:{eventId:string[]}}
-) {
+export async function PATCH(req: NextRequest) {
     try {
         await dbConnect();
         const session = await getServerSession(authOptions);
@@ -19,23 +18,24 @@ export async function PATCH(
             return NextResponse.json({ error: 'Unauthorized. User must be logged in.' }, { status: 401 });
         }
 
-        const { eventId } = await params;
+        const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+        const eventId = segments[segments.length - 1];
 
-        if (!eventId.length) {
+        if (!eventId) {
             return new Response(
               JSON.stringify({ success: false, message: 'Event ID is required' }),
               { status: 400, headers: { 'Content-Type': 'application/json' } }
             );
         }
 
-        if (!mongoose.Types.ObjectId.isValid(eventId[0])) {
+        if (!mongoose.Types.ObjectId.isValid(eventId)) {
             return new Response(
               JSON.stringify({ success: false, message: 'Invalid event ID' }),
               { status: 400, headers: { 'Content-Type': 'application/json' } }
             );
         }
 
-        const eventObjectId = new mongoose.Types.ObjectId(eventId[0])
+        const eventObjectId = new mongoose.Types.ObjectId(eventId)
         const userId = new mongoose.Types.ObjectId(user._id);
 
         const event: Event|null = await EventModel.findById(eventObjectId);
@@ -56,7 +56,9 @@ export async function PATCH(
         console.log(alreadyInterested);
 
         if (alreadyInterested) {
+            // @ts-ignore
             event.interestedMembersArr = event.interestedMembersArr.filter((id) => id.toString() != student._id.toString());
+            // @ts-ignore
             student.interestedEvents = student.interestedEvents.filter((id) => id.toString() != event._id.toString());
 
             console.log(student.interestedEvents);

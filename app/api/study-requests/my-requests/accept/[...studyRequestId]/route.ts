@@ -1,7 +1,7 @@
 import dbConnect from "@/lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "@/app/api/(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import mongoose from "mongoose";
 import {
   AcceptedStudyRequestModel,
@@ -12,7 +12,7 @@ import {
 } from "@/model/User";
 import {v4 as uuidv4} from "uuid";
 
-export async function PATCH(req: Request, { params }: { params: { studyRequestId: string[] } }) {
+export async function PATCH(req: NextRequest) {
   try {
     console.log("here");
     await dbConnect();
@@ -26,24 +26,26 @@ export async function PATCH(req: Request, { params }: { params: { studyRequestId
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    const { studyRequestId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const requestToTeachId = segments[segments.length - 1];
+    const studyRequestId = segments[segments.length - 2];
 
-    if (!studyRequestId || studyRequestId.length < 2) {
+    if (!studyRequestId || !requestToTeachId) {
       return NextResponse.json(
-        { error: 'Study request id not found.' },
+        { error: 'Study request id or request to teach id not found.' },
         { status: 403}
       );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(studyRequestId[0]) || !mongoose.Types.ObjectId.isValid(studyRequestId[1])) {
+    if (!mongoose.Types.ObjectId.isValid(studyRequestId) || !mongoose.Types.ObjectId.isValid(requestToTeachId)) {
       return NextResponse.json(
         { error: 'Study request id not valid.' },
         { status: 403 }
       );
     }
 
-    const studyRequestObjectId = new mongoose.Types.ObjectId(studyRequestId[0]);
-    const requestToTeachObjectId = new mongoose.Types.ObjectId(studyRequestId[1]);
+    const studyRequestObjectId = new mongoose.Types.ObjectId(studyRequestId);
+    const requestToTeachObjectId = new mongoose.Types.ObjectId(requestToTeachId);
 
     const { phoneNumber } = await req.json();
 

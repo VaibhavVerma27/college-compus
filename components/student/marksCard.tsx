@@ -1,11 +1,11 @@
 import Marks from "./marks";
-import { subjectMarks } from "../../types/SubjectMakrs";
+import { subjectMarks } from "@/types/SubjectMakrs";
 
-interface MarksCardProps {
-  subjectMarks: subjectMarks;
-}
+// interface MarksCardProps {
+//   subjectMarks: subjectMarks;
+// }
 
-export default function MarksCard({ subjectMarks }: MarksCardProps) {
+export default function MarksCard({ subjectMarks }: {subjectMarks: subjectMarks[]}) {
   return (
     <div className="flex flex-col w-full max-w-4xl p-6 bg-gradient-to-b from-[#0B0C10] to-[#1F2833] border-2 rounded-xl border-cyan-300 shadow-lg shadow-cyan-300/50">
       {subjectMarks.map((subject) => (

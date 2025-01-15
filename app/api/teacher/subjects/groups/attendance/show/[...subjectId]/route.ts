@@ -1,10 +1,10 @@
 import dbConnect from "@/lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "@/app/api/(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import {AttendanceModel} from "@/model/User";
 
-export async function GET(req: Request, { params }: { params: { subjectId: string[] } }) {
+export async function GET(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -22,9 +22,11 @@ export async function GET(req: Request, { params }: { params: { subjectId: strin
       );
     }
 
-    const { subjectId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const groupName = segments[segments.length - 1];
+    const subjectId = segments[segments.length - 2];
 
-    if (!subjectId || subjectId.length < 2) {
+    if (!subjectId || !groupName) {
       return NextResponse.json(
         {error: 'No subjectId provided'},
         {status: 403}
@@ -32,7 +34,7 @@ export async function GET(req: Request, { params }: { params: { subjectId: strin
     }
 
 
-    const attendance = await AttendanceModel.findOne({subjectId: subjectId[0], groupName: subjectId[1]});
+    const attendance = await AttendanceModel.findOne({subjectId: subjectId, groupName: groupName});
 
     if (!attendance) {
       return NextResponse.json(

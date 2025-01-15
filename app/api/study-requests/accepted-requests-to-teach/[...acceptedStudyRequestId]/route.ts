@@ -1,13 +1,13 @@
 import dbConnect from "@/lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "@/app/api/(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import mongoose from "mongoose";
 import {AcceptedStudyRequestModel, StudyRequestModel} from "@/model/User";
 
 
 // handle cancel meeting
-export async function PATCH(req: Request, { params }: { params: { acceptedStudyRequestId: string[] } }) {
+export async function PATCH(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -19,23 +19,25 @@ export async function PATCH(req: Request, { params }: { params: { acceptedStudyR
     }
 
     const userId = new mongoose.Types.ObjectId(user._id);
-    const { acceptedStudyRequestId } = await params;
 
-    if (!acceptedStudyRequestId || !acceptedStudyRequestId.length) {
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const acceptedStudyRequestId = segments[segments.length - 1];
+
+    if (!acceptedStudyRequestId) {
       return NextResponse.json(
         { error: 'Study request id not found.' },
         { status: 403}
       );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(acceptedStudyRequestId[0])) {
+    if (!mongoose.Types.ObjectId.isValid(acceptedStudyRequestId)) {
       return NextResponse.json(
         { error: 'Study request id not valid.' },
         { status: 403 }
       );
     }
 
-    const acceptedStudyRequestObjectId = new mongoose.Types.ObjectId(acceptedStudyRequestId[0]);
+    const acceptedStudyRequestObjectId = new mongoose.Types.ObjectId(acceptedStudyRequestId);
 
     const acceptedStudyRequest = await AcceptedStudyRequestModel.findOneAndDelete({_id: acceptedStudyRequestObjectId, teacherId: userId});
 

@@ -1,11 +1,11 @@
 import dbConnect from "@/lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "@/app/api/(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import mongoose from "mongoose";
 import {RequestToTeachModel, StudyRequestModel} from "@/model/User";
 
-export async function GET(req: Request, { params }: { params: { studyRequestId: string[] } }) {
+export async function GET(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -18,23 +18,24 @@ export async function GET(req: Request, { params }: { params: { studyRequestId: 
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    const { studyRequestId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const studyRequestId = segments[segments.length - 1];
 
-    if (!studyRequestId || !studyRequestId.length) {
+    if (!studyRequestId) {
       return NextResponse.json(
         { error: 'Study request id not found.' },
         { status: 403}
       );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(studyRequestId[0])) {
+    if (!mongoose.Types.ObjectId.isValid(studyRequestId)) {
       return NextResponse.json(
         { error: 'Study request id not valid.' },
         { status: 403 }
       );
     }
 
-    const studyRequestObjectId = new mongoose.Types.ObjectId(studyRequestId[0]);
+    const studyRequestObjectId = new mongoose.Types.ObjectId(studyRequestId);
 
     const studyRequest = await StudyRequestModel.findOne({ _id: studyRequestObjectId, user_id: userId });
 

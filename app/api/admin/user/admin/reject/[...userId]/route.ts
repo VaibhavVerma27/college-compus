@@ -1,11 +1,11 @@
 import dbConnect from "../../../../../../../lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "../../../../../(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import mongoose from "mongoose";
 import {RequestModel, UserModel} from "../../../../../../../model/User";
 
-export async function PATCH(req: Request, { params }: { params: { userId: string[] } }) {
+export async function PATCH(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -23,23 +23,24 @@ export async function PATCH(req: Request, { params }: { params: { userId: string
       );
     }
 
-    const {userId} = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const userId = segments[segments.length - 1];
 
-    if (!userId.length) {
+    if (!userId) {
       return NextResponse.json(
         {error: 'No user id found.'},
         {status: 400}
       );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(userId[0])) {
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
       return NextResponse.json(
         {error: 'Invalid user id'},
         {status: 400}
       );
     }
 
-    const userObjectId = new mongoose.Types.ObjectId(userId[0]);
+    const userObjectId = new mongoose.Types.ObjectId(userId);
 
     const deleteRequest = await RequestModel.deleteOne({user_id: userObjectId});
 

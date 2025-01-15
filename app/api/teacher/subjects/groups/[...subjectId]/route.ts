@@ -1,12 +1,12 @@
 import dbConnect from "../../../../../../lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "../../../../(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import {AttendanceModel} from "../../../../../../model/User";
 import mongoose from "mongoose";
 
 //get all groups of a subject
-export async function GET(req: Request, { params }: { params: { subjectId: string[] } }) {
+export async function GET(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -24,9 +24,10 @@ export async function GET(req: Request, { params }: { params: { subjectId: strin
       );
     }
 
-    const { subjectId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const subjectId = segments[segments.length - 1];
 
-    if (!subjectId || subjectId.length === 0) {
+    if (!subjectId) {
       return NextResponse.json(
         {error: 'No subjectId provided'},
         {status: 403}
@@ -36,7 +37,7 @@ export async function GET(req: Request, { params }: { params: { subjectId: strin
     const groups = await AttendanceModel.aggregate([
       {
         $match: {
-          subjectId: subjectId[0],
+          subjectId: subjectId,
         }
       },
       {
@@ -65,7 +66,7 @@ export async function GET(req: Request, { params }: { params: { subjectId: strin
 
 
 //add a group in a subject
-export async function POST(req: Request, { params }: { params: { subjectId: string[] } }) {
+export async function POST(req:  NextRequest) {
   try {
     await dbConnect();
 
@@ -85,9 +86,10 @@ export async function POST(req: Request, { params }: { params: { subjectId: stri
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    const { subjectId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const subjectId = segments[segments.length - 1];
 
-    if (!subjectId || subjectId.length === 0) {
+    if (!subjectId) {
       return NextResponse.json(
         {error: 'No subjectId provided'},
         {status: 403}
@@ -111,7 +113,7 @@ export async function POST(req: Request, { params }: { params: { subjectId: stri
     }
 
     const group = await AttendanceModel.create({
-      subjectId: subjectId[0],
+      subjectId: subjectId,
       groupName,
       teacherId: userId,
       totalClasses: 0,
@@ -138,7 +140,7 @@ export async function POST(req: Request, { params }: { params: { subjectId: stri
 
 
 //delete group  subjectId === groupId
-export async function DELETE(req: Request, { params }: { params: { subjectId: string[] } }) {
+export async function DELETE(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -158,23 +160,24 @@ export async function DELETE(req: Request, { params }: { params: { subjectId: st
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    const { subjectId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const subjectId = segments[segments.length - 1];
 
-    if (!subjectId || subjectId.length === 0) {
+    if (!subjectId) {
       return NextResponse.json(
         {error: 'No groupId provided'},
         {status: 403}
       )
     }
 
-    if (!mongoose.Types.ObjectId.isValid(subjectId[0])) {
+    if (!mongoose.Types.ObjectId.isValid(subjectId)) {
       return NextResponse.json(
         {error: "invalid group id"},
         {status: 403}
       )
     }
 
-    const groupId = new mongoose.Types.ObjectId(subjectId[0]);
+    const groupId = new mongoose.Types.ObjectId(subjectId);
 
     const group = await AttendanceModel.deleteOne({_id: groupId, teacherId: userId});
 

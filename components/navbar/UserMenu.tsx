@@ -5,7 +5,8 @@ import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { useCallback, useState } from "react";
 
-function UserMenu() {
+// @ts-ignore
+function UserMenu({handleNavigate}) {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
@@ -25,7 +26,7 @@ function UserMenu() {
     <div className="relative z-20 ml-4">
       <div className="flex flex-row items-center gap-3">
         <button
-          onClick={() => router.push('/dashboard/student')}
+          onClick={handleNavigate}
           className="hidden md:block text-white text-sm font-semibold py-3 px-4 rounded-full hover:bg-blue-600 hover:text-white transition cursor-pointer"
         >
           {session?.user?.username || "Guest"}

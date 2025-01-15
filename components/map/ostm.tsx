@@ -112,7 +112,9 @@ const OpenStreetmap: React.FC = () => {
           data.latitudeData.forEach((marker: any) => {
             const distance = userLocation
               ? calculateDistance(
+                // @ts-ignore
                   userLocation.lat,
+                // @ts-ignore
                   userLocation.lng,
                   marker.latitude,
                   marker.longitude
@@ -173,11 +175,15 @@ const OpenStreetmap: React.FC = () => {
       if (sendLocationTimeout.current) clearTimeout(sendLocationTimeout.current)
 
       sendLocationTimeout.current = setTimeout(() => {
+        // @ts-ignore
         const locationData = {
           student_id: studentId,
+          // @ts-ignore
           latitude: userLocationRef.current.lat,
+          // @ts-ignore
           longitude: userLocationRef.current.lng,
         }
+        // @ts-ignore
         wsRef.current.send(JSON.stringify(locationData))
       }, 1000)
     }

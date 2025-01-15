@@ -1,12 +1,12 @@
 import dbConnect from "@/lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "@/app/api/(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import mongoose from "mongoose";
 import {IssueModel} from "@/model/User";
 
 
-export async function GET(req: Request, { params }: { params: { issueId: string[] } }) {
+export async function GET(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -19,16 +19,17 @@ export async function GET(req: Request, { params }: { params: { issueId: string[
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    const { issueId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const issueId = segments[segments.length - 1];
 
-    if (!issueId.length) {
+    if (!issueId) {
       return NextResponse.json(
         {error: "issue id not found"},
         {status: 403}
       )
     }
 
-    if (!mongoose.Types.ObjectId.isValid(issueId[0])) {
+    if (!mongoose.Types.ObjectId.isValid(issueId)) {
       return NextResponse.json(
         {error: "issue id not valid"},
         {status: 403}
@@ -53,7 +54,7 @@ export async function GET(req: Request, { params }: { params: { issueId: string[
 
 
 
-export async function DELETE(req: Request, { params }: { params: { issueId: string[] } }) {
+export async function DELETE(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -66,16 +67,17 @@ export async function DELETE(req: Request, { params }: { params: { issueId: stri
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    const { issueId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const issueId = segments[segments.length - 1];
 
-    if (!issueId.length) {
+    if (!issueId) {
       return NextResponse.json(
         {error: "issue id not found"},
         {status: 403}
       )
     }
 
-    if (!mongoose.Types.ObjectId.isValid(issueId[0])) {
+    if (!mongoose.Types.ObjectId.isValid(issueId)) {
       return NextResponse.json(
         {error: "issue id not valid"},
         {status: 403}
@@ -100,7 +102,7 @@ export async function DELETE(req: Request, { params }: { params: { issueId: stri
 
 
 
-export async function PATCH(req: Request, { params }: { params: { issueId: string[] } }) {
+export async function PATCH(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -122,23 +124,24 @@ export async function PATCH(req: Request, { params }: { params: { issueId: strin
       )
     }
 
-    const { issueId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const issueId = segments[segments.length - 1];
 
-    if (!issueId.length) {
+    if (!issueId) {
       return NextResponse.json(
         {error: "issue id not provided."},
         {status: 403}
       )
     }
 
-    if (!mongoose.Types.ObjectId.isValid(issueId[0])) {
+    if (!mongoose.Types.ObjectId.isValid(issueId)) {
       return NextResponse.json(
         {error: "issue id is invalid."},
         {status: 403}
       )
     }
 
-    const issueObjectId = new mongoose.Types.ObjectId(issueId[0]);
+    const issueObjectId = new mongoose.Types.ObjectId(issueId);
 
 
     const issue = await IssueModel.findOneAndUpdate(

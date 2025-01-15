@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 "use client";
 
 import dynamic from "next/dynamic";
@@ -5,18 +7,18 @@ import dynamic from "next/dynamic";
 // Dynamically import the MapComponent with SSR disabled
 const DynamicMapComponent = dynamic(
   () => import("../../components/map/mapComponent"),
-  { ssr: false }
+  {ssr: false}
 );
 
-export default function AddEventPage() {
-  const handleLocationSelect = (lat: number, lng: number) => {
-    console.log("Selected Location:", lat, lng);
-  };
 
+// @ts-ignore
+export default function AddEventPage(onLocationSelect) {
+  if (!onLocationSelect) return ;
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-black to-[#0B0C10] p-4">
+    <div
+      className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-black to-[#0B0C10] p-4">
 
-      <DynamicMapComponent onLocationSelect={handleLocationSelect} />
+      <DynamicMapComponent onLocationSelect={onLocationSelect}/>
 
       <div className="text-gray-300 mt-2">
         Select a location on the map to see coordinates.

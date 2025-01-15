@@ -1,14 +1,11 @@
 import dbConnect from "../../../../lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "../../(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import mongoose from "mongoose";
 import {ClubModel} from "../../../../model/User";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { clubId: string[] } }
-) {
+export async function GET(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -21,25 +18,24 @@ export async function GET(
 
     const userId = new mongoose.Types.ObjectId(user._id);
 
-    const {clubId} = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const clubId = segments[segments.length - 1];
 
-    if (!clubId.length) {
+    if (!clubId) {
       return new Response(
         JSON.stringify({ success: false, message: 'Club ID is required' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    console.log(clubId);
-
-    if (!mongoose.Types.ObjectId.isValid(clubId[0])) {
+    if (!mongoose.Types.ObjectId.isValid(clubId)) {
       return new Response(
         JSON.stringify({ success: false, message: 'Invalid clubs ID' }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    const clubObjectId = new mongoose.Types.ObjectId(clubId[0]);
+    const clubObjectId = new mongoose.Types.ObjectId(clubId);
 
     const club = await ClubModel.aggregate([
       {

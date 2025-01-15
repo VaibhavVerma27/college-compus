@@ -3,11 +3,11 @@
 import dbConnect from "../../../../../../lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "../../../../(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import mongoose from "mongoose";
 import {FriendRequestModel, StudentModel} from "../../../../../../model/User";
 
-export async function PATCH(req: Request, { params } : { params : { studentId: string[] } } )  {
+export async function PATCH(req: NextRequest )  {
   try {
     await dbConnect();
 
@@ -18,7 +18,8 @@ export async function PATCH(req: Request, { params } : { params : { studentId: s
       return NextResponse.json({ error: 'Unauthorized. User must be logged in.' }, { status: 401 });
     }
 
-    const { studentId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const studentId = segments.slice(-2);
 
     if (!studentId || studentId.length < 2) {
       return NextResponse.json(

@@ -1,10 +1,10 @@
 import dbConnect from "../../../../../lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "../../../(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import {ResourceModel} from "../../../../../model/User";
 
-export async function GET(req: Request, { params }: { params: { subjectId: string[] } }) {
+export async function GET(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -15,9 +15,10 @@ export async function GET(req: Request, { params }: { params: { subjectId: strin
       return NextResponse.json({error: 'Unauthorized. User must be logged in.'}, {status: 401});
     }
 
-    const { subjectId } = await params;
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const subjectId = segments[segments.length - 1];
 
-    if (!subjectId || subjectId.length === 0) {
+    if (!subjectId) {
       return NextResponse.json(
         {error: 'No subjectId provided'},
         {status: 403}
@@ -27,7 +28,7 @@ export async function GET(req: Request, { params }: { params: { subjectId: strin
     const resources = await ResourceModel.aggregate([
       {
         $match: {
-          subjectId: subjectId[0],
+          subjectId: subjectId,
         }
       },
       {

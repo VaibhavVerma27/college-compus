@@ -3,11 +3,11 @@
 import dbConnect from "../../../../../../../lib/connectDb";
 import {getServerSession, User} from "next-auth";
 import {authOptions} from "../../../../../(auth)/auth/[...nextauth]/options";
-import {NextResponse} from "next/server";
+import {NextRequest, NextResponse} from "next/server";
 import mongoose from "mongoose";
 import {TeacherModel} from "../../../../../../../model/User";
 
-export async function PATCH(req: Request, { params }: { params: { teacherId: string[] } }) {
+export async function PATCH(req: NextRequest) {
   try {
     await dbConnect();
 
@@ -33,23 +33,25 @@ export async function PATCH(req: Request, { params }: { params: { teacherId: str
         {status: 403}
       )
     }
-    const { teacherId } = await params;
 
-    if (!teacherId.length) {
+    const segments = req.nextUrl.pathname.split("/").filter(Boolean);
+    const teacherId = segments[segments.length - 1];
+
+    if (!teacherId) {
       return NextResponse.json(
         {error: 'No teacher id found.'},
         {status: 400}
       );
     }
 
-    if (!mongoose.Types.ObjectId.isValid(teacherId[0])) {
+    if (!mongoose.Types.ObjectId.isValid(teacherId)) {
       return NextResponse.json(
         {error: 'Invalid teacher id'},
         {status: 400}
       );
     }
 
-    const teacherObjectId = new mongoose.Types.ObjectId(teacherId[0]);
+    const teacherObjectId = new mongoose.Types.ObjectId(teacherId);
 
     const teacher = await TeacherModel.findOne(teacherObjectId);
 
