@@ -1,6 +1,8 @@
-import {router} from "next/client";
+"use client"
+import {useRouter} from "next/navigation";
 
 export default function TeacherHomePage() {
+  const router = useRouter();
   const teacherFeatures = [
     { name: "Make Announcements", description: "Share updates with your class.", color: "bg-emerald-600", hover: "hover:bg-emerald-700", func: ()=> router.push("/teacher/announcements/add") },
     { name: "Add Resources", description: "Upload materials for students.", color: "bg-purple-600", hover: "hover:bg-purple-700", func: ()=> router.push("/teacher/subjects") },

@@ -1,6 +1,8 @@
-import {router} from "next/client";
+"use client"
+import {useRouter} from "next/navigation";
 
 export default function AdminHomePage() {
+  const router = useRouter();
   const adminFeatures = [
     { name: "Add Clubs", description: "Create and manage student clubs.", color: "bg-blue-600", hover: "hover:bg-blue-700", func: ()=> router.push("/admin/clubs/add-club") },
     { name: "Assign Subjects", description: "Assign subjects to teachers and students.", color: "bg-green-600", hover: "hover:bg-green-700", func: ()=> router.push("/admin/subjects/students") },
