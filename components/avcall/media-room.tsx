@@ -21,7 +21,7 @@ export const MediaRoom = ({
 
     (async () => {
       try {
-        const response = await fetch(`/api/token?room=${roomId}&studentName=${studentName}`);
+        const response = await fetch(`https://college-compus.vercel.app//api/token?room=${roomId}&studentName=${studentName}`);
         const data = await response.json();
         setToken(data.token);
       } catch (error) {

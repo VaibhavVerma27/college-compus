@@ -31,7 +31,7 @@ const FloatingChatbot = () => {
 
     try {
       setChat((chat) => [...chat, { userInput: userMessage, response: "fetching response..." }]);
-      const res = await axios.post("/api/aichatbot", { userInput: userMessage });
+      const res = await axios.post("https://college-compus.vercel.app/api/aichatbot", { userInput: userMessage });
       console.log(res.data);
 
       if (res.status === 200) {

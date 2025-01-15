@@ -15,7 +15,7 @@ export default function StudentHomePage() {
     async function fetchAnnouncements() {
       setIsLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/announcements`);
+        const res = await axios.get(`https://college-compus.vercel.app//api/user/announcements`);
         if (res.status === 200) {
           setAdminAnnouncements(res.data.adminAnnouncements);
           setTeacherAnnouncements(res.data.classAnnouncements);

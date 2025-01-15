@@ -60,7 +60,7 @@ const OpenStreetmap: React.FC = () => {
   useEffect(() => {
     const fetchStudentId = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/getStudentId')
+        const response = await axios.get('https://college-compus.vercel.app/api/getStudentId')
         if (response.data?.student_id) {
           const fetchedStudentId = response.data.student_id
           setStudentId(fetchedStudentId)
@@ -82,7 +82,7 @@ const OpenStreetmap: React.FC = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/events/event-coords')
+        const response = await axios.get('https://college-compus.vercel.app/api/events/event-coords')
         if (response.data?.events) {
           setEvents(response.data.events)
         }
