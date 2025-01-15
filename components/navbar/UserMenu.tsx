@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { useCallback, useState } from "react";
 
-// @ts-ignore
+// @ts-expect-error abc
 function UserMenu({handleNavigate}) {
   const [isOpen, setIsOpen] = useState(false);
   const { data: session } = useSession();
