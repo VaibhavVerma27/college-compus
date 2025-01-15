@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import {getServerSession} from "next-auth";
+import {authOptions} from "@/app/api/(auth)/auth/[...nextauth]/options";
 export { default } from 'next-auth/middleware';
 
 export const config = {
@@ -18,37 +20,36 @@ export const config = {
 };
 
 export async function middleware(request: NextRequest) {
-  const token = await getToken({ req: request });
+  const session = await getServerSession(authOptions)
+  console.log(session);
   const url = request.nextUrl;
 
-  console.log(token);
-
   if (
-    token &&
+    session &&
     (url.pathname.startsWith('/sign-in') ||
       url.pathname.startsWith('/sign-up') ||
       url.pathname.startsWith('/verify'))
   ) {
-    if (token.isTeacher) {
+    if (session.user.isTeacher) {
       return NextResponse.redirect(new URL('/profile/teacher', request.url));
     } else {
       return NextResponse.redirect(new URL('/profile/student', request.url));
     }
   }
 
-  if (!token && url.pathname.startsWith('/profile')) {
+  if (!session && url.pathname.startsWith('/profile')) {
     return NextResponse.redirect(new URL('/sign-in', request.url));
   }
 
   if (
-    !token &&
+    !session &&
     (url.pathname.startsWith('/clubs') || url.pathname.startsWith('/events') || url.pathname.startsWith('/resources')|| url.pathname.startsWith('/events') || url.pathname.startsWith('/issues'))
   ) {
     return NextResponse.redirect(new URL('/sign-in', request.url));
   }
 
   if (
-    !token?.sid_verification &&
+    !session?.user?.sid_verification &&
     url.pathname.startsWith('/profile/student')
   ) {
     return NextResponse.redirect(
