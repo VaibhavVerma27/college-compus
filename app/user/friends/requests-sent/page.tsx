@@ -12,7 +12,7 @@ export default function RequestsSentPage() {
     async function fetchData() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/friends/requests-sent`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/user/friends/requests-sent`);
         if (res.status === 200) {
           setRequestsSent(res.data);
         } else {
@@ -36,7 +36,7 @@ export default function RequestsSentPage() {
   async function withdrawRequest (from: string, to: string) {
     setLoading(true);
     try {
-      const res = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/friends/withdraw-request/${from}/${to}`)
+      const res = await axios.delete(`https://college-compus.vercel.app/api/user/friends/withdraw-request/${from}/${to}`)
 
       if (res.status === 200) {
         setRequestsSent(requestsSent.filter((request)=> request.to._id.toString() !== to));

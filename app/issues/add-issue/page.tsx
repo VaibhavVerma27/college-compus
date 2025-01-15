@@ -28,7 +28,7 @@ export default function AddIssuePage() {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/issues`, {
+      const res = await axios.post(`https://college-compus.vercel.app/api/issues`, {
         title,
         description,
         attachments,

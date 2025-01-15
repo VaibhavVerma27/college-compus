@@ -46,7 +46,7 @@ export default function EventsPage() {
     const fetchAllEvents = async () => {
       setLoading(true);
       try {
-        const response = await axios.get(`/api/events`);
+        const response = await axios.get(`https://college-compus.vercel.app/api/events`);
         const events = await response.data;
         setAllEvents(events);
       } catch (error) {

@@ -30,7 +30,7 @@ export default function AddStudyRequestPage() {
 
     setLoading(true);
     try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests`, {
+      const res = await axios.post(`https://college-compus.vercel.app/api/study-requests`, {
         subjectId,
         subjectName,
         description,

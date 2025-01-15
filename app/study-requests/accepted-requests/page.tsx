@@ -14,7 +14,7 @@ export default function AcceptedRequestsPage() {
     async function fetchAcceptedRequests() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests/accepted-requests`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/study-requests/accepted-requests`);
         if (res.status === 200) {
           setAcceptedRequests(res.data);
         } else {
@@ -32,7 +32,7 @@ export default function AcceptedRequestsPage() {
 
   const handleCancelMeeting = async (id: string) => {
     try {
-      const res = await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests/accepted-requests/${id}`);
+      const res = await axios.patch(`https://college-compus.vercel.app/api/study-requests/accepted-requests/${id}`);
       if (res.status === 200) {
         alert("Meeting canceled successfully!");
         setAcceptedRequests(acceptedRequests.filter((request) => request._id.toString() !== id));
@@ -46,7 +46,7 @@ export default function AcceptedRequestsPage() {
 
   const handleMarkCompleted = async (id: string) => {
     try {
-      const res = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests/accepted-requests/${id}`);
+      const res = await axios.delete(`https://college-compus.vercel.app/api/study-requests/accepted-requests/${id}`);
       if (res.status === 200) {
         alert("Meeting marked as completed!");
         setAcceptedRequests(acceptedRequests.filter((request) => request._id.toString() !== id));

@@ -33,7 +33,7 @@ export default function TeachersPage() {
       setLoading(true);
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/subjects/teacher`
+          `https://college-compus.vercel.app/api/admin/subjects/teacher`
         );
         if (res.status === 200) {
           setTeachers(res.data);
@@ -55,7 +55,7 @@ export default function TeachersPage() {
     setLoading(true);
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/subjects/teacher/add/${teacherId}`,
+        `https://college-compus.vercel.app/api/admin/subjects/teacher/add/${teacherId}`,
         { subject_code, subject_name }
       );
 
@@ -87,7 +87,7 @@ export default function TeachersPage() {
     setLoading(true);
     try {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/subjects/teacher/remove/${teacherId}`,
+        `https://college-compus.vercel.app/api/admin/subjects/teacher/remove/${teacherId}`,
         { subject_code, subject_name }
       );
 

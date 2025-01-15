@@ -30,7 +30,7 @@ export default function AttendancePage() {
       setIsLoading(true);
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/subjects/groups/attendance/show/${subjectId}/${groupName}`
+          `https://college-compus.vercel.app/api/teacher/subjects/groups/attendance/show/${subjectId}/${groupName}`
         );
         if (res.status === 200) {
           setAttendanceData(res.data);

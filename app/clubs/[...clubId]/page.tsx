@@ -22,7 +22,7 @@ export default function Club() {
     async function fetchData() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/clubs/${clubId}`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/clubs/${clubId}`);
         if (res.status === 200) {
           setSingleClub(res.data.data);
         } else {

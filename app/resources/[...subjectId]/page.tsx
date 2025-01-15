@@ -17,7 +17,7 @@ export default function SingleResourcePage() {
       if (!subjectId) return;
       try {
         setLoading(true);
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/resources/${subjectId}`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/user/resources/${subjectId}`);
         if (res.status === 200) {
           setResources(res.data);
         }

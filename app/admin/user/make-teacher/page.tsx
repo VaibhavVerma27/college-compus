@@ -15,7 +15,7 @@ export default function MakeTeacherPage() {
       setLoading(true);
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/user/teacher`
+          `https://college-compus.vercel.app/api/admin/user/teacher`
         );
         if (res.status === 200) {
           setRequests(res.data);
@@ -41,7 +41,7 @@ export default function MakeTeacherPage() {
     setLoading(true);
     try {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/user/teacher/reject/${userId}`
+        `https://college-compus.vercel.app/api/admin/user/teacher/reject/${userId}`
       );
 
       if (res.status === 200) {
@@ -60,7 +60,7 @@ export default function MakeTeacherPage() {
     setLoading(true);
     try {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/user/teacher/accept/${userId}`
+        `https://college-compus.vercel.app/api/admin/user/teacher/accept/${userId}`
       );
 
       if (res.status === 200) {

@@ -20,7 +20,7 @@ export default function UploadResourcesPage() {
       if (!subjectId) return;
       try {
         setLoading(true);
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/subjects/resources/${subjectId}`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/teacher/subjects/resources/${subjectId}`);
         if (res.status === 200) {
           setResources(res.data);
         } else {
@@ -45,7 +45,7 @@ export default function UploadResourcesPage() {
         fileName: result.info.original_filename,
       };
 
-      const res = await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/subjects/resources/${subjectId}`, {file});
+      const res = await axios.patch(`https://college-compus.vercel.app/api/teacher/subjects/resources/${subjectId}`, {file});
       if (res.status === 200) {
         setResources([...resources, file]);
       }
@@ -57,7 +57,7 @@ export default function UploadResourcesPage() {
   async function handleDelete() {
     if (!file) return;
     try {
-      const res = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/subjects/resources/${subjectId}`, {
+      const res = await axios.delete(`https://college-compus.vercel.app/api/teacher/subjects/resources/${subjectId}`, {
         data: file,
       });
 

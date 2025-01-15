@@ -52,7 +52,7 @@ export default function SignUpForm() {
       setUsernameMessage('');
       try {
         const response = await axios.get<ApiResponse>(
-          `/api/check-username-unique?username=${debouncedUsername}`
+          `https://college-compus.vercel.app/api/check-username-unique?username=${debouncedUsername}`
         );
         setUsernameMessage(response.data.message);
       } catch (error) {
@@ -74,7 +74,7 @@ export default function SignUpForm() {
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     setIsSubmitting(true);
     try {
-      const response = await axios.post<ApiResponse>('/api/sign-up', data);
+      const response = await axios.post<ApiResponse>('https://college-compus.vercel.app/api/sign-up', data);
 
       toast({
         title: 'Success',

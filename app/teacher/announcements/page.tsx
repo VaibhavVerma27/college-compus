@@ -16,7 +16,7 @@ export default function TeacherAnnouncements() {
       setIsLoading(true);
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/announcements`,
+          `https://college-compus.vercel.app/api/teacher/announcements`,
         );
         if (res.status === 200) {
           setAnnouncements(res.data);
@@ -39,7 +39,7 @@ export default function TeacherAnnouncements() {
     if (!confirm("Are you sure you want to delete this announcement?")) return;
 
     try {
-      const res = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/announcements/${id}`);
+      const res = await axios.delete(`https://college-compus.vercel.app/api/teacher/announcements/${id}`);
 
       if (res.status === 200) {
         setAnnouncements((prev) =>

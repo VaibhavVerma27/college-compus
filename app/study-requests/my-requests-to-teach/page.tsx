@@ -21,7 +21,7 @@ export default function MyRequestsToTeachPage() {
     async function fetchRequests() {
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests/my-requests-to-teach`
+          `https://college-compus.vercel.app/api/study-requests/my-requests-to-teach`
         );
         if (res.status === 200) {
           setMyRequestsToTeach(res.data);
@@ -44,7 +44,7 @@ export default function MyRequestsToTeachPage() {
 
     try {
       const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests/my-requests-to-teach/${deletePopup.requestId}/${deletePopup.studyRequestId}`
+        `https://college-compus.vercel.app/api/study-requests/my-requests-to-teach/${deletePopup.requestId}/${deletePopup.studyRequestId}`
       );
       if (res.status === 200) {
         alert("Request deleted successfully!");

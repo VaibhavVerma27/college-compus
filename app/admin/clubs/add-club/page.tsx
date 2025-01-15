@@ -34,7 +34,7 @@ export default function AddClubPage() {
   async function handleAddClub() {
     setLoading(true);
     try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/clubs/add-club`, {
+      const res = await axios.post(`https://college-compus.vercel.app/api/admin/clubs/add-club`, {
         clubName,
         clubLogo,
         clubIdSecs,

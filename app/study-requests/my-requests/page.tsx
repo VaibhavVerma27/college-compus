@@ -21,7 +21,7 @@ export default function StudyRequestsPage() {
     async function fetchStudyRequests() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests/my-requests`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/study-requests/my-requests`);
         if (res.status === 200) {
           setMyRequests(res.data);
         } else {
@@ -43,7 +43,7 @@ export default function StudyRequestsPage() {
 
     try {
       const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests/my-requests/${deletePopup.requestId}`
+        `https://college-compus.vercel.app/api/study-requests/my-requests/${deletePopup.requestId}`
       );
       if (res.status === 200) {
         alert("Request deleted successfully!");

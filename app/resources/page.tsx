@@ -15,7 +15,7 @@ export default function ResourcePage() {
     async function fetchData() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/resources`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/user/resources`);
         if (res.status === 200) {
           setSubjects(res.data);
         }

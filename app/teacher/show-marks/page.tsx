@@ -17,7 +17,7 @@ const TeacherMarksPage = () => {
       setLoading(true);
 
       try {
-        const response = await axios.get("/api/teacher/get-marks");
+        const response = await axios.get("https://college-compus.vercel.app/api/teacher/get-marks");
         setSubjects(response.data);
       } catch (error) {
         console.error("Error fetching marks", error);

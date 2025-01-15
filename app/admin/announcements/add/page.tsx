@@ -19,7 +19,7 @@ export default function AddAnnouncement() {
     setMessage("");
 
     try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/announcements`, {
+      const res = await axios.post(`https://college-compus.vercel.app/api/admin/announcements`, {
         announcementText,
         department,
       });

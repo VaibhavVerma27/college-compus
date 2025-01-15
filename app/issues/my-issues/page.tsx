@@ -27,7 +27,7 @@ export default function MyIssuesPage() {
     async function fetchIssues() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/issues/my-issues`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/issues/my-issues`);
         if (res.status === 200) {
           setIssues(res.data);
         } else {
@@ -49,7 +49,7 @@ export default function MyIssuesPage() {
     setDeleting(true);
     try {
       const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/issues/${issueId}`
+        `https://college-compus.vercel.app/api/issues/${issueId}`
       );
       if (res.status === 200) {
         setIssues((prevIssues) =>

@@ -21,7 +21,7 @@ export default function AttendancePage() {
 
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/subjects/groups/attendance/${subjectId}/${groupName}`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/teacher/subjects/groups/attendance/${subjectId}/${groupName}`);
         if (res.status === 200) {
           setStudents(res.data.students);
           console.log(res.data);
@@ -48,7 +48,7 @@ export default function AttendancePage() {
 
     try {
       setLoading(true);
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/subjects/groups/attendance/${subjectId}`, {
+      const res = await axios.post(`https://college-compus.vercel.app/api/teacher/subjects/groups/attendance/${subjectId}`, {
         groupName,
         date: attendanceDate,
         lectureCount,

@@ -59,7 +59,7 @@ export default function AddEventPage() {
 
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/add-event`,
+        `https://college-compus.vercel.app/api/events/add-event`,
         payload
       );
 
@@ -75,7 +75,7 @@ export default function AddEventPage() {
     async function fetchClubs() {
       try {
         setLoading(true);
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/clubs/head`);
+        const response = await axios.get(`https://college-compus.vercel.app/api/clubs/head`);
         if (response.status === 403) router.push("/");
         setClubs(response.data);
       } catch (err) {

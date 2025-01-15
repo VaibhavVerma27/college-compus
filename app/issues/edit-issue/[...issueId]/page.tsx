@@ -20,7 +20,7 @@ export default function AddIssuePage() {
     async function fetchIssues() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/issues/${issueId}`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/issues/${issueId}`);
         if (res.status === 200) {
           setTitle(res.data.title);
           setDescription(res.data.description);
@@ -56,7 +56,7 @@ export default function AddIssuePage() {
 
     setLoading(true);
     try {
-      const res = await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/issues/${issueId}`, {
+      const res = await axios.patch(`https://college-compus.vercel.app/api/issues/${issueId}`, {
         title,
         description,
         attachments,

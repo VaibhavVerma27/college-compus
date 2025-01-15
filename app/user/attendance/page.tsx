@@ -14,7 +14,7 @@ const StudentAttendancePage = () => {
       setLoading(true);
 
       try {
-        const response = await axios.get("/api/user/attendance");
+        const response = await axios.get("https://college-compus.vercel.app/api/user/attendance");
         setAttendances(response.data);
       } catch (error) {
         console.error("Error fetching attendance", error);

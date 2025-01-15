@@ -30,7 +30,7 @@ export default function AddRequestToTeachPage() {
       if (!studyRequestId) return;
 
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests/add-request-to-teach/${studyRequestId}`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/study-requests/add-request-to-teach/${studyRequestId}`);
         if (res.status === 200) {
           setStudyRequest(res.data);
         } else {
@@ -61,7 +61,7 @@ export default function AddRequestToTeachPage() {
     setLoading(true);
 
     try {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests/add-request-to-teach/${studyRequestId}`,
+      const res = await axios.post(`https://college-compus.vercel.app/api/study-requests/add-request-to-teach/${studyRequestId}`,
         {
           description,
           attachments,

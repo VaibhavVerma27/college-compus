@@ -20,7 +20,7 @@ export default function EditAnnouncement() {
       setIsLoading(true);
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/announcements/${id}`
+          `https://college-compus.vercel.app/api/admin/announcements/${id}`
         );
         if (res.status === 200) {
           setAnnouncementText(res.data.announcementText);
@@ -44,7 +44,7 @@ export default function EditAnnouncement() {
     setMessage("");
 
     try {
-      const res = await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/announcements/${id}`, {
+      const res = await axios.patch(`https://college-compus.vercel.app/api/admin/announcements/${id}`, {
         announcementText,
         department,
       });

@@ -28,7 +28,7 @@ export default function IssuesPage() {
       setLoading(true);
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/issues`
+          `https://college-compus.vercel.app/api/issues`
         );
         if (res.status === 200) {
           setIssues(res.data);
@@ -51,7 +51,7 @@ export default function IssuesPage() {
     setLoading(true);
     try {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/issues/${action}-vote/${issueId}`
+        `https://college-compus.vercel.app/api/issues/${action}-vote/${issueId}`
       );
       if (res.status === 200) {
         setIssues(

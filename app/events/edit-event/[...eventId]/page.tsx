@@ -48,7 +48,7 @@ export default function EditEventPage() {
 
     const fetchEventDetails = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${eventId}`);
+        const response = await axios.get(`https://college-compus.vercel.app/api/events/${eventId}`);
         const event = response.data.data;
         setEventHostedBy(event.eventHostedBy);
         setHeading(event.heading);
@@ -71,7 +71,7 @@ export default function EditEventPage() {
   // Fetch clubs for event hosting options
   async function fetchClubs() {
     try {
-      const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/clubs/head`);
+      const response = await axios.get(`https://college-compus.vercel.app/api/clubs/head`);
       if (response.status === 403) router.push("/");
       setClubs(response.data);
     } catch (err) {
@@ -106,7 +106,7 @@ export default function EditEventPage() {
 
     try {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${eventId}`,
+        `https://college-compus.vercel.app/api/events/${eventId}`,
         payload
       );
 

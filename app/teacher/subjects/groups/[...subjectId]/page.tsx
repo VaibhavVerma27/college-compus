@@ -24,7 +24,7 @@ export default function GroupsPage() {
       setLoading(true);
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/subjects/groups/${subjectId}`
+          `https://college-compus.vercel.app/api/teacher/subjects/groups/${subjectId}`
         );
         if (res.status === 200) {
           setGroups(res.data);
@@ -75,7 +75,7 @@ export default function GroupsPage() {
     setLoading(true);
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/subjects/groups/${subjectId}`,
+        `https://college-compus.vercel.app/api/teacher/subjects/groups/${subjectId}`,
         { groupName, students: studentIds }
       );
       if (res.status === 200) {
@@ -96,7 +96,7 @@ export default function GroupsPage() {
     setLoading(true);
     try {
       const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/subjects/groups/${deleteGroupId}`
+        `https://college-compus.vercel.app/api/teacher/subjects/groups/${deleteGroupId}`
       );
 
       if (res.status === 200) {

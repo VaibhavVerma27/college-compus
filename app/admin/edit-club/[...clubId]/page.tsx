@@ -28,7 +28,7 @@ export default function AddClubPage() {
     async function fetchData() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/clubs/${clubId}`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/admin/clubs/${clubId}`);
         if (res.status === 200) {
           setEditClub(res.data);
           setClubName(res.data.clubName);
@@ -72,7 +72,7 @@ export default function AddClubPage() {
 
   async function handleUpdateClub() {
     try {
-      const res = await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/clubs/edit-club/${clubId}`, {
+      const res = await axios.patch(`https://college-compus.vercel.app/api/admin/clubs/edit-club/${clubId}`, {
         clubName,
         clubLogo,
         clubIdSecs,

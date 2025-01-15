@@ -29,7 +29,7 @@ export default function Event() {
     async function fetchData() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${eventId}`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/events/${eventId}`);
         if (res.status === 200) {
           setSingleEvent(res.data.data);
           setInterested(res.data.data.isInterested);
@@ -68,7 +68,7 @@ export default function Event() {
 
     const { _id } = event;
     try {
-      const res = await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/interested/${_id.toString()}`);
+      const res = await axios.patch(`https://college-compus.vercel.app/api/events/interested/${_id.toString()}`);
       if (res.status === 200) {
         if (!interested) {
           setInterestedMembers((prev) => [...prev, res.data.studentInfo]);

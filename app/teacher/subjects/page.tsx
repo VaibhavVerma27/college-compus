@@ -14,7 +14,7 @@ export default function SubjectsPage() {
     async function fetchData() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/subjects`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/teacher/subjects`);
         if (res.status === 200) {
           setSubjects(res.data);
         } else {

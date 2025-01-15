@@ -14,7 +14,7 @@ export default function MakeAdminPage() {
     async function fetchData() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/user/admin`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/admin/user/admin`);
         if (res.status === 200) {
           setRequests(res.data);
         } else {
@@ -39,7 +39,7 @@ export default function MakeAdminPage() {
     setLoading(true);
     try {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/user/admin/reject/${userId}`
+        `https://college-compus.vercel.app/api/admin/user/admin/reject/${userId}`
       );
 
       if (res.status === 200) {
@@ -56,7 +56,7 @@ export default function MakeAdminPage() {
     setLoading(true);
     try {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/user/admin/accept/${userId}`
+        `https://college-compus.vercel.app/api/admin/user/admin/accept/${userId}`
       );
 
       if (res.status === 200) {

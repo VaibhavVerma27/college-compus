@@ -20,7 +20,7 @@ export default function SingleRequestPage() {
     async function fetchSingleRequest() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests/${studyRequestId}`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/study-requests/${studyRequestId}`);
         if (res.status === 200) {
           setSingleRequest(res.data);
         } else {
@@ -41,7 +41,7 @@ export default function SingleRequestPage() {
     if (!acceptPopup.requestId || acceptPopup.phoneNumber.length !== 10 || isNaN(Number(acceptPopup.phoneNumber))) return;
     try {
       setLoading(true);
-      const res = await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests/my-requests/accept/${studyRequestId}/${acceptPopup.requestId}`,
+      const res = await axios.patch(`https://college-compus.vercel.app/api/study-requests/my-requests/accept/${studyRequestId}/${acceptPopup.requestId}`,
         {phoneNumber: Number(acceptPopup.phoneNumber)},
         {
           headers: {
@@ -67,7 +67,7 @@ export default function SingleRequestPage() {
     try {
       setLoading(true);
       const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests/my-requests/reject/${studyRequestId}/${rejectPopup.requestId}`
+        `https://college-compus.vercel.app/api/study-requests/my-requests/reject/${studyRequestId}/${rejectPopup.requestId}`
       );
       if (res.status === 200 && singleRequest) {
         alert("Request rejected successfully!");

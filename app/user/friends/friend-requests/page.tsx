@@ -12,7 +12,7 @@ export default function FriendRequests() {
     async function fetchData() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/friends/current-requests`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/user/friends/current-requests`);
         if (res.status === 200) {
           setCurrentRequests(res.data);
         } else {
@@ -36,7 +36,7 @@ export default function FriendRequests() {
   async function rejectRequest (to: string, from: string) {
     setLoading(true);
     try {
-      const res = await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/friends/reject-friend/${to}/${from}`)
+      const res = await axios.delete(`https://college-compus.vercel.app/api/user/friends/reject-friend/${to}/${from}`)
 
       if (res.status === 200) {
         setCurrentRequests(currentRequests.filter((request)=> request.from._id.toString() !== from));
@@ -51,7 +51,7 @@ export default function FriendRequests() {
   async function acceptRequest (to: string, from: string) {
     setLoading(true);
     try {
-      const res = await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/friends/accept-friend/${to}/${from}`)
+      const res = await axios.patch(`https://college-compus.vercel.app/api/user/friends/accept-friend/${to}/${from}`)
 
       if (res.status === 200) {
         setCurrentRequests(currentRequests.filter((request)=> request.from._id.toString() !== from));

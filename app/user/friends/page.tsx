@@ -15,7 +15,7 @@ export default function FriendsPage() {
     async function fetchData() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/friends`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/user/friends`);
         if (res.status === 200) {
           setFriends(res.data);
         } else {
@@ -39,7 +39,7 @@ export default function FriendsPage() {
   async function removeFriend (to: string, from: string) {
     setLoading(true);
     try {
-      const res = await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/friends/remove-friend/${to}/${from}`)
+      const res = await axios.patch(`https://college-compus.vercel.app/api/user/friends/remove-friend/${to}/${from}`)
 
       if (res.status === 200 && friends) {
         setFriends({

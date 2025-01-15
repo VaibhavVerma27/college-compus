@@ -20,8 +20,8 @@ export default function TeacherAddAnnouncement() {
     async function fetchData() {
       setIsLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/subjects`);
-        const res2  = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/announcements/${id}`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/teacher/subjects`);
+        const res2  = await axios.get(`https://college-compus.vercel.app/api/teacher/announcements/${id}`);
 
         if (res.status === 200 && res2.status === 200) {
           setSubjects(res.data.subjectTeaching);
@@ -48,7 +48,7 @@ export default function TeacherAddAnnouncement() {
     setMessage("");
 
     try {
-      const res = await axios.patch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/announcements/${id}`,
+      const res = await axios.patch(`https://college-compus.vercel.app/api/teacher/announcements/${id}`,
         {
           announcementText,
           subjectCode,

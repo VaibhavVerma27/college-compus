@@ -17,7 +17,7 @@ export default function StudentsSubjectPage() {
 
     try {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/subjects/student`,
+        `https://college-compus.vercel.app/api/admin/subjects/student`,
         { student_id, subject_id }
       );
 

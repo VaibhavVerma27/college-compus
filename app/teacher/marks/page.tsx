@@ -16,7 +16,7 @@ const UploadMarksPage = () => {
   useEffect(() => {
     const fetchSubjects = async () => {
       try {
-        const response = await axios.get("/api/teacher/subjects");
+        const response = await axios.get("https://college-compus.vercel.app/api/teacher/subjects");
         setSubjects(response.data.subjectTeaching || []);
       } catch (error) {
         console.error("Error fetching subjects", error);
@@ -51,7 +51,7 @@ const UploadMarksPage = () => {
 
     setLoading(true);
     try {
-      const response = await axios.patch(`/api/teacher/marks`, formData, {
+      const response = await axios.patch(`https://college-compus.vercel.app/api/teacher/marks`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -16,7 +16,7 @@ export default function AddFriendsPage() {
       setLoading(true);
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/friends/add-friends`
+          `https://college-compus.vercel.app/api/user/friends/add-friends`
         );
         if (res.status === 200) {
           setAddFriends(res.data.students);
@@ -43,7 +43,7 @@ export default function AddFriendsPage() {
     setLoading(true);
     try {
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user/friends/add-friends/${id}/${to}`
+        `https://college-compus.vercel.app/api/user/friends/add-friends/${id}/${to}`
       );
       if (res.status === 200) {
         setAddFriends(

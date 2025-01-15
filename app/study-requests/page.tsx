@@ -15,7 +15,7 @@ export default function StudyRequestsPage() {
     async function fetchStudyRequests() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/study-requests`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/study-requests`);
         if (res.status === 200) {
           setStudyRequests(res.data);
         } else {

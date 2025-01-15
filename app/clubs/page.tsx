@@ -13,7 +13,7 @@ export default function ClubsPage() {
     async function fetchData() {
       setLoading(true);
       try {
-        const res = await axios.get(`https://college-compus.vercel.app//api/clubs`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/clubs`);
         if (res.status === 200) {
           setAllClub(res.data);
         } else {

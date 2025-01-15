@@ -19,7 +19,7 @@ const Teacher = () => {
     async function fetchData() {
       setLoading(true);
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/teacher/profile`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/teacher/profile`);
         if (res.status === 200) {
           setProfile(res.data);
         } else {

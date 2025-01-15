@@ -17,7 +17,7 @@ export default function AdminAnnouncementsPage() {
       setIsLoading(true);
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/announcements`
+          `https://college-compus.vercel.app/api/admin/announcements`
         );
         if (res.status === 200) {
           setAnnouncements(res.data);
@@ -39,7 +39,7 @@ export default function AdminAnnouncementsPage() {
     setMessage("");
     try {
       const res = await axios.delete(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/admin/announcements/${id}`
+        `https://college-compus.vercel.app/api/admin/announcements/${id}`
       );
       if (res.status === 200) {
         setAnnouncements((prev) => prev.filter((ann) => ann._id.toString() !== id));
