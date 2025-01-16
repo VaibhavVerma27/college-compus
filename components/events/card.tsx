@@ -14,6 +14,7 @@ interface EventCardProps {
   eventTime: Date;
   eventVenue: string;
   isInterested: boolean;
+  activeTab: string;
 }
 
 export default function EventCard({
@@ -26,6 +27,7 @@ export default function EventCard({
   eventTime,
   eventVenue,
   isInterested,
+  activeTab
 }: EventCardProps) {
   const [interested, setInterested] = useState(isInterested);
 
@@ -41,11 +43,11 @@ export default function EventCard({
   async function handleInterested() {
     try {
       const res = await axios.patch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/interested/${_id}`
+        `https://college-compus.vercel.app/api/events/interested/${_id}`
       );
       if (res.status === 200) {
-        console.log("Interest status updated");
         setInterested(!interested);
+        window.location.href = `/events?tab=${activeTab}`;
       }
     } catch (error) {
       console.log("Error updating interest status:", error);

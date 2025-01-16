@@ -62,7 +62,7 @@ const UploadMarksPage = () => {
       alert(error.response?.data?.error || "An error occurred while uploading the file.");
     } finally {
       setLoading(false);
-      router.push('/teacher/marks/show-marks');
+      router.push('/teacher/show-marks');
     }
   };
 

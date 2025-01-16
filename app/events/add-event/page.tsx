@@ -5,7 +5,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { CldUploadButton } from "next-cloudinary";
 import DotsLoader from "@/components/loading/dotLoader";
-import EventMap from "../../test/page"; // Imported EventMap instead of MapComponent
+import MapComponent from "@/components/map/mapComponent";
 
 export default function AddEventPage() {
   const [eventCoordinates, setEventCoordinates] = useState<{ lat: number; lng: number } | null>(null);
@@ -90,7 +90,7 @@ export default function AddEventPage() {
     fetchClubs();
   }, [router]);
 
-  if (loading || clubs.length === 0) return <DotsLoader />;
+  if (loading) return <DotsLoader />;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-black to-[#0B0C10] p-4">
@@ -161,12 +161,11 @@ export default function AddEventPage() {
           </div>
 
           <div className="mt-8">
-            <EventMap
-              onLocationSelect={handleLocationSelect} // Using EventMap instead of MapComponent
-            />
+            <label className="block text-lg font-semibold text-gray-300">Event Venue (Map)</label>
+            <MapComponent onLocationSelect={handleLocationSelect}/>
             {eventCoordinates && (
               <p className="text-gray-300 mt-2">
-                Selected Location: Latitude {eventCoordinates.lat}, Longitude {eventCoordinates.lng}
+                Selected Location: Done Latitude {eventCoordinates.lat}, Longitude {eventCoordinates.lng}
               </p>
             )}
           </div>

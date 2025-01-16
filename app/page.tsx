@@ -8,7 +8,7 @@ import StudentHomePage from "@/components/homepage/student";
 export default function HomePage() {
   const session= useSession();
 
-  if (!session) {
+  if (!session.data?.user) {
     return (
       <>
         <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white">
