@@ -28,6 +28,11 @@ export default function AddStudyRequestPage() {
       return;
     }
 
+    if (price < 0) {
+      alert("price should be greater than or equal to zero");
+      return;
+    }
+
     setLoading(true);
     try {
       const res = await axios.post(`https://college-compus.vercel.app/api/study-requests`, {
