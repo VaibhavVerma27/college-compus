@@ -12,13 +12,12 @@ const DynamicMapComponent = dynamic(
 
 
 // @ts-ignore
-export default function AddEventPage(onLocationSelect) {
-  if (!onLocationSelect) return ;
+export default function AddEventPage() {
   return (
     <div
       className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-black to-[#0B0C10] p-4">
 
-      <DynamicMapComponent onLocationSelect={onLocationSelect}/>
+      <DynamicMapComponent />
 
       <div className="text-gray-300 mt-2">
         Select a location on the map to see coordinates.

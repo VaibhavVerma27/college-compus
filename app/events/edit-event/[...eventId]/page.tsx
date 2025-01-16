@@ -37,11 +37,6 @@ export default function EditEventPage() {
     }
   }
 
-  // Handle the location selection from the map
-  function handleLocationSelect(lat: number, lng: number) {
-    setEventCoordinates({ lat, lng });
-  }
-
   // Fetch event details for editing
   useEffect(() => {
     if (!eventId) return;
@@ -256,8 +251,7 @@ export default function EditEventPage() {
 
         {/* Map Component for Location Selection */}
                  <div className="mt-8">
-                    <EventMap
-                      onLocationSelect={handleLocationSelect} // Using EventMap instead of MapComponent
+                    <EventMap // Using EventMap instead of MapComponent
                     />
                     {eventCoordinates && (
                       <p className="text-gray-300 mt-2">

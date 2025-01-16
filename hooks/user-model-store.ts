@@ -296,8 +296,14 @@ interface AcceptedRequestToTeach {
     roomId: string;
 }
 
+interface EventCoordinates {
+    lat: number;
+    lng: number;
+}
+
 
 interface ModelStore {
+    eventCoordinates: EventCoordinates;
     acceptedRequestsToTeach: AcceptedRequestToTeach[]|[];
     acceptedRequests: AcceptedRequest[]|[];
     singleRequest: SingleRequest|null;
@@ -321,6 +327,7 @@ interface ModelStore {
     allEvents: Event[];
     singleEvent:SingleEvent|null;
     isLoading: boolean;
+    setEventCoordinates: (eventCoordinates: EventCoordinates) => void;
     setAcceptedRequestsToTeach: (acceptedRequestsToTeach: AcceptedRequestToTeach[]) => void;
     setAcceptedRequests: (acceptedRequests: AcceptedRequest[]) => void;
     setSingleRequest: (singleRequest: SingleRequest) => void;
@@ -347,6 +354,7 @@ interface ModelStore {
 }
 
 export const useModel = create<ModelStore>((set) => ({
+    eventCoordinates: {lat: 30.7649, lng: 76.7868},
     acceptedRequestsToTeach: [],
     acceptedRequests: [],
     singleRequest: null,
@@ -370,6 +378,7 @@ export const useModel = create<ModelStore>((set) => ({
     editClub:null,
     profile: null,
     isLoading: false,
+    setEventCoordinates: ((eventCoordinates) => set({eventCoordinates})),
     setAcceptedRequestsToTeach: ((acceptedRequestsToTeach) => set({acceptedRequestsToTeach})),
     setAcceptedRequests: ((acceptedRequests) => set({acceptedRequests})),
     setSingleRequest: ((singleRequest) => set({singleRequest})),

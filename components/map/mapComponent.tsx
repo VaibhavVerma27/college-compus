@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import L from "leaflet";
+import {useModel} from "@/hooks/user-model-store";
 
 interface MarkerData {
   student_id: string;
@@ -10,16 +11,12 @@ interface MarkerData {
 }
 
 interface MapComponentProps {
-  onLocationSelect: (lat: number, lng: number) => void;
   initialLocation?: { lat: number; lng: number };
   markers?: MarkerData[];
 }
 
-export default function MapComponent({
-                                       onLocationSelect,
-                                       initialLocation,
-                                       markers = [],
-                                     }: MapComponentProps) {
+export default function MapComponent({initialLocation, markers = [],}: MapComponentProps) {
+  const { setEventCoordinates } = useModel();
   const mapRef = useRef<HTMLDivElement | null>(null);
   const leafletMap = useRef<L.Map | null>(null);
   const markerRef = useRef<L.Marker | null>(null);
@@ -37,28 +34,35 @@ export default function MapComponent({
     if (typeof window === "undefined" || !mapRef.current) return;
 
     if (!leafletMap.current) {
+      // Initialize the map
       leafletMap.current = L.map(mapRef.current).setView(
         initialLocation ? [initialLocation.lat, initialLocation.lng] : [30.7652305, 76.7846207],
         17
       );
 
+      // Add tile layer
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(leafletMap.current);
 
+      // Add click event listener for adding/updating the marker
       leafletMap.current.on("click", (e: L.LeafletMouseEvent) => {
         const { lat, lng } = e.latlng;
 
+        // Update or add the marker
         if (markerRef.current) {
           markerRef.current.setLatLng([lat, lng]);
         } else {
-          // @ts-expect-error abbbbbb
+
+          // @ts-expect-error don't know
           markerRef.current = L.marker([lat, lng], { icon: customIcon }).addTo(leafletMap.current);
         }
 
-        onLocationSelect(lat, lng);
+        // Trigger the callback
+        setEventCoordinates({lat, lng});
       });
     }
-  }, [onLocationSelect]);
+  }, [customIcon, initialLocation, setEventCoordinates]);
 
+  // Update the marker when initialLocation changes
   useEffect(() => {
     if (initialLocation && leafletMap.current) {
       if (markerRef.current) {
@@ -69,10 +73,12 @@ export default function MapComponent({
           { icon: customIcon }
         ).addTo(leafletMap.current);
       }
+
       leafletMap.current.setView([initialLocation.lat, initialLocation.lng], 17);
     }
-  }, [initialLocation]);
+  }, [customIcon, initialLocation]);
 
+  // Add additional markers when the markers prop changes
   useEffect(() => {
     if (leafletMap.current) {
       markers.forEach((markerData) => {
@@ -82,7 +88,7 @@ export default function MapComponent({
           .bindPopup(`Student ID: ${student_id}`);
       });
     }
-  }, [markers]);
+  }, [customIcon, markers]);
 
   return (
     <div

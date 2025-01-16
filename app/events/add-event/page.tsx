@@ -5,10 +5,11 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { CldUploadButton } from "next-cloudinary";
 import DotsLoader from "@/components/loading/dotLoader";
-import MapComponent from "@/components/map/mapComponent";
+import EventMap from "../../test/page";
+import {useModel} from "@/hooks/user-model-store"; // Imported EventMap instead of MapComponent
 
 export default function AddEventPage() {
-  const [eventCoordinates, setEventCoordinates] = useState<{ lat: number; lng: number } | null>(null);
+  const {eventCoordinates} = useModel();
   const [eventVenue, setEventVenue] = useState<string>("")
   const [eventHostedBy, setEventHostedBy] = useState("");
   const [tags, setTags] = useState<string[]>([]);
@@ -34,9 +35,9 @@ export default function AddEventPage() {
     }
   }
 
-  function handleLocationSelect(lat: number, lng: number) {
-    setEventCoordinates({ lat, lng });
-  }
+  // function handleLocationSelect(lat: number, lng: number) {
+  //   setEventCoordinates({ lat, lng });
+  // }
 
   async function handleAddEvent() {
     if (!poster || !date || !time || !eventHostedBy || !description || !eventVenue) {
@@ -90,7 +91,7 @@ export default function AddEventPage() {
     fetchClubs();
   }, [router]);
 
-  if (loading) return <DotsLoader />;
+  if (loading || clubs.length === 0) return <DotsLoader />;
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-black to-[#0B0C10] p-4">
@@ -161,11 +162,11 @@ export default function AddEventPage() {
           </div>
 
           <div className="mt-8">
-            <label className="block text-lg font-semibold text-gray-300">Event Venue (Map)</label>
-            <MapComponent onLocationSelect={handleLocationSelect}/>
+            <EventMap // Using EventMap instead of MapComponent
+            />
             {eventCoordinates && (
               <p className="text-gray-300 mt-2">
-                Selected Location: Done Latitude {eventCoordinates.lat}, Longitude {eventCoordinates.lng}
+                Selected Location: Latitude {eventCoordinates.lat}, Longitude {eventCoordinates.lng}
               </p>
             )}
           </div>
