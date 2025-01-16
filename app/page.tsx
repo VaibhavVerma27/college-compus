@@ -38,5 +38,6 @@ export default function HomePage() {
     }
   }
 
+
   return <StudentHomePage />
 }
