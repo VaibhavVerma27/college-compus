@@ -23,12 +23,12 @@ export default function AddStudyRequestPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!subjectId || !subjectName || !description) {
+    if (!subjectId || !subjectName || !description || isNaN(Number(price))) {
       alert("All fields are required!");
       return;
     }
 
-    if (price < 0) {
+    if (Number(price) < 0) {
       alert("price should be greater than or equal to zero");
       return;
     }
