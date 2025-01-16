@@ -14,7 +14,7 @@ export default function AcceptedRequestsToTeachPage() {
     async function fetchAcceptedRequestsToTeach() {
       setLoading(true);
       try {
-        const res = await axios.get(`https://college-compus.vercel.app/api/accepted-requests-to-teach`);
+        const res = await axios.get(`https://college-compus.vercel.app/api/study-requests/accepted-requests-to-teach`);
         if (res.status === 200) {
           setAcceptedRequestsToTeach(res.data);
         } else {
