@@ -16,17 +16,9 @@ export default function EventsPage() {
   const router = useRouter();
   const [filterCriteria, setFilterCriteria] = useState<string[]>([]);
   const [showFilters, setShowFilters] = useState(false);
-  const searchParams = new URLSearchParams(window.location.search);
-  const tabFromUrl = searchParams.get('tab') || 'all';
+
 
   // Update URL when tab changes
-  const handleTabChange = (tab: string) => {
-    setActiveTab(tab);
-    const newUrl = `${window.location.pathname}?tab=${tab}`;
-    window.history.pushState({}, '', newUrl);
-    setPage(1);
-  };
-
   const filteredEvents = useMemo(() => {
     let events = allEvents;
     if (filterCriteria.length > 0) {
@@ -109,8 +101,7 @@ export default function EventsPage() {
                     ? "bg-blue-600 text-white scale-105 shadow-lg"
                     : "bg-gray-700 text-gray-300 hover:bg-gray-600 hover:text-white"
                 }`}
-                onClick={() => handleTabChange(tab.toLowerCase().replace(/\s+/g, ""))}
-              >
+                onClick={() => setActiveTab(tab.toLowerCase().replace(/\s+/g, ""))}              >
                 {tab}
               </button>
             ))}
