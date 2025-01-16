@@ -17,7 +17,7 @@ export async function GET() {
             return NextResponse.json({error: 'Unauthorized. User must be logged in.'}, {status: 401});
         }
 
-        if (!user.isAdmin) {
+        if (!user.isTeacher) {
             return NextResponse.json(
               {error: 'User is not admin'},
               {status: 401}

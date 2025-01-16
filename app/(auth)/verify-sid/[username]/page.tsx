@@ -29,7 +29,7 @@ const SIDVerificationPage = () => {
     setIsLoading(true);
     
     try {
-      const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/verify-sid/`, {
+      const response = await axios.post(`https://college-compus.vercel.app/api/verify-sid/`, {
         username,
         image,
       });

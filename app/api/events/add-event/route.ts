@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 import mongoose from 'mongoose';
-import { EventModel, ClubModel } from '../../../../model/User';
-import { StudentModel } from '../../../../model/User';
+import { EventModel, ClubModel } from '@/model/User';
+import { StudentModel } from '@/model/User';
 import dbConnect from '../../../../lib/connectDb';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../(auth)/auth/[...nextauth]/options';
 import { User } from 'next-auth';
-import { saveAIEvents } from '../../../../lib/aiEvents';
+import { saveAIEvents } from '@/lib/aiEvents';
 
 export async function POST(req: Request) {
     try {
@@ -31,9 +31,8 @@ export async function POST(req: Request) {
             description,
             tags,
         } = await req.json();
-        const url = req.url;
-        const urlParts = url.split('/');
-        const aiLink = "http://" + urlParts[2] + "/events/";
+
+        const aiLink = "https://college-compus.vercel.app" + "/events/";
 
         if (!eventHostedBy || !eventVenue || !eventTime || !heading || !description || !poster) {
             return NextResponse.json(
