@@ -31,9 +31,10 @@ export async function middleware(request: NextRequest) {
   ) {
     if (token.isTeacher) {
       return NextResponse.redirect(new URL('/dashboard/teacher', request.url));
-    } else {
+    } else if (token.isStudent) {
       return NextResponse.redirect(new URL('/dashboard/student', request.url));
-    }
+    } else return NextResponse.redirect(new URL('/', request.url));
+
   }
 
   if (!token && url.pathname.startsWith('/dashboard')) {
