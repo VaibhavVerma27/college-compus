@@ -27,7 +27,7 @@ function UserMenu({handleNavigate}) {
       <div className="flex flex-row items-center gap-3">
         <button
           onClick={handleNavigate}
-          className="hidden md:block text-white text-sm font-semibold py-3 px-4 rounded-full hover:bg-blue-600 hover:text-white transition cursor-pointer"
+          className="text-white text-sm font-semibold py-3 px-4 rounded-full hover:bg-blue-600 hover:text-white transition cursor-pointer"
         >
           {session?.user?.username || "Guest"}
         </button>
@@ -37,7 +37,7 @@ function UserMenu({handleNavigate}) {
           aria-expanded={isOpen}
         >
           <AiOutlineMenu />
-          <div className="hidden md:block">
+          <div className="">
             <Avatar/>
           </div>
         </div>
