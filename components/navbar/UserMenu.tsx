@@ -20,8 +20,6 @@ function UserMenu({handleNavigate}) {
     router.push('/sign-in'); // Redirect to sign-in page after signout completes
   };
 
-  console.log(session);
-
   return (
     <div className="relative z-20 ml-4">
       <div className="flex flex-row items-center gap-3">

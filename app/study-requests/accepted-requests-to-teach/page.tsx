@@ -30,6 +30,22 @@ export default function AcceptedRequestsToTeachPage() {
     fetchAcceptedRequestsToTeach();
   }, [setAcceptedRequestsToTeach, setLoading]);
 
+  const handleLeaveMeeting = async (id : string) => {
+    try {
+      const res = await axios.patch(`https://college-compus.vercel.app/api/study-requests/accepted-requests-to-teach${id}`,);
+
+      if (res.status === 200) {
+        router.push("/study-requests");
+      } else {
+        alert("failed to cancel meeting")
+      }
+    } catch (error) {
+      console.error("Error leaving the meeting:", error);
+      alert("Failed to leave the meeting. Please try again.");
+    }
+  };
+
+
   if (isLoading) {
     return <DotsLoader />;
   }
@@ -46,7 +62,9 @@ export default function AcceptedRequestsToTeachPage() {
       {/* Accepted Requests List */}
       <div className="flex flex-col items-center mt-10 px-4">
         {acceptedRequestsToTeach.length === 0 ? (
-          <div className="text-gray-400 text-lg">No accepted requests to teach found.</div>
+          <div className="text-gray-400 text-lg">
+            No accepted requests to teach found.
+          </div>
         ) : (
           <div className="w-full max-w-5xl space-y-6">
             {acceptedRequestsToTeach.map((request) => (
@@ -58,17 +76,23 @@ export default function AcceptedRequestsToTeachPage() {
                   Student: {request.student.name} ({request.student.student_id})
                 </div>
                 <p className="text-sm text-gray-400 mt-2">
-                  Semester: {request.student.semester}, Branch: {request.student.branch}
+                  Semester: {request.student.semester}, Branch:{" "}
+                  {request.student.branch}
                 </p>
                 <p className="text-sm text-gray-500 mt-2">
-                  Subject: <span className="font-semibold text-white">{request.subjectName}</span>
+                  Subject:{" "}
+                  <span className="font-semibold text-white">
+                    {request.subjectName}
+                  </span>
                 </p>
                 <p className="text-sm text-gray-400 mt-2">{request.description}</p>
 
                 {/* Attachments */}
                 {request.studentAttachments.length > 0 && (
                   <div className="mt-4">
-                    <h3 className="text-sm text-gray-300 font-semibold">Student Attachments:</h3>
+                    <h3 className="text-sm text-gray-300 font-semibold">
+                      Student Attachments:
+                    </h3>
                     <ul className="list-disc list-inside mt-2 space-y-1">
                       {request.studentAttachments.map((attachment, index) => (
                         <li key={index}>
@@ -88,7 +112,9 @@ export default function AcceptedRequestsToTeachPage() {
 
                 {request.teacherAttachments.length > 0 && (
                   <div className="mt-4">
-                    <h3 className="text-sm text-gray-300 font-semibold">Teacher Attachments:</h3>
+                    <h3 className="text-sm text-gray-300 font-semibold">
+                      Teacher Attachments:
+                    </h3>
                     <ul className="list-disc list-inside mt-2 space-y-1">
                       {request.teacherAttachments.map((attachment, index) => (
                         <li key={index}>
@@ -107,16 +133,25 @@ export default function AcceptedRequestsToTeachPage() {
                 )}
 
                 <p className="text-sm text-gray-500 mt-2">
-                  Student&#39;s Phone: <span className="font-semibold text-white">{request.studentPhoneNumber}</span>
+                  Student&#39;s Phone:{" "}
+                  <span className="font-semibold text-white">
+                    {request.studentPhoneNumber}
+                  </span>
                 </p>
 
-                {/* Join Room Button */}
-                <div className="mt-6 flex justify-end">
+                {/* Join and Leave Room Buttons */}
+                <div className="mt-6 flex justify-end gap-4">
                   <button
                     className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg font-semibold shadow-lg transition-all duration-300"
                     onClick={() => router.push(`/study-room/${request.roomId}`)}
                   >
                     Join Room
+                  </button>
+                  <button
+                    className="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-lg font-semibold shadow-lg transition-all duration-300"
+                    onClick={() => handleLeaveMeeting(request._id.toString())}
+                  >
+                    Cancel Meeting
                   </button>
                 </div>
               </div>
