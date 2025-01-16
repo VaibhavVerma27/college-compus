@@ -124,7 +124,7 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      const correctedName = await correctNamefromEmail(student.email);
+      const correctedName = await correctNamefromEmail(user.email);
       student.name = correctedName ?? name;
       student.sid_verification = true;
       if (department) student.branch = department; // Only update branch if department was extracted
