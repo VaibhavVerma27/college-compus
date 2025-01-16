@@ -16,10 +16,10 @@ interface MapComponentProps {
 }
 
 export default function MapComponent({
-  onLocationSelect,
-  initialLocation,
-  markers = [],
-}: MapComponentProps) {
+                                       onLocationSelect,
+                                       initialLocation,
+                                       markers = [],
+                                     }: MapComponentProps) {
   const mapRef = useRef<HTMLDivElement | null>(null);
   const leafletMap = useRef<L.Map | null>(null);
   const markerRef = useRef<L.Marker | null>(null);
@@ -37,35 +37,28 @@ export default function MapComponent({
     if (typeof window === "undefined" || !mapRef.current) return;
 
     if (!leafletMap.current) {
-      // Initialize the map
       leafletMap.current = L.map(mapRef.current).setView(
         initialLocation ? [initialLocation.lat, initialLocation.lng] : [30.7652305, 76.7846207],
         17
       );
 
-      // Add tile layer
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png").addTo(leafletMap.current);
 
-      // Add click event listener for adding/updating the marker
       leafletMap.current.on("click", (e: L.LeafletMouseEvent) => {
         const { lat, lng } = e.latlng;
 
-        // Update or add the marker
         if (markerRef.current) {
           markerRef.current.setLatLng([lat, lng]);
         } else {
-
-          // @ts-expect-error don't know
+          // @ts-expect-error abbbbbb
           markerRef.current = L.marker([lat, lng], { icon: customIcon }).addTo(leafletMap.current);
         }
 
-        // Trigger the callback
         onLocationSelect(lat, lng);
       });
     }
   }, [onLocationSelect]);
 
-  // Update the marker when initialLocation changes
   useEffect(() => {
     if (initialLocation && leafletMap.current) {
       if (markerRef.current) {
@@ -76,12 +69,10 @@ export default function MapComponent({
           { icon: customIcon }
         ).addTo(leafletMap.current);
       }
-
       leafletMap.current.setView([initialLocation.lat, initialLocation.lng], 17);
     }
   }, [initialLocation]);
 
-  // Add additional markers when the markers prop changes
   useEffect(() => {
     if (leafletMap.current) {
       markers.forEach((markerData) => {
