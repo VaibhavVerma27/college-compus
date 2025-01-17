@@ -4,7 +4,7 @@ import Logo from "./Logo";
 import UserMenu from "./UserMenu";
 import { useRouter } from "next/navigation";
 
-const NavbarTeacher: React.FC = () => {
+const NavbarTeacher = () => {
   const router = useRouter();
 
   return (
@@ -14,45 +14,47 @@ const NavbarTeacher: React.FC = () => {
         <div className="flex items-center px-4">
           <Logo />
         </div>
-        <div className="">
+        <div>
           <UserMenu handleNavigate={() => router.push("/dashboard/teacher")} />
         </div>
       </div>
 
       {/* Menu Items */}
-      <div
-        className={`block mt-4 md:flex md:gap-6 md:items-center justify-evenly text-lg font-archivo`}
-      >
-        <button
-          className="block md:inline text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
-          onClick={() => router.push("/teacher/announcements")}
+      <div className="mt-4 overflow-x-auto md:overflow-visible">
+        <div
+          className={`flex gap-4 text-lg font-archivo whitespace-nowrap md:flex-wrap md:justify-evenly`}
         >
-          Announcements
-        </button>
-        <button
-          className="block md:inline text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
-          onClick={() => router.push("/teacher/announcements/add")}
-        >
-          Add Announcement
-        </button>
-        <button
-          className="block md:inline text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
-          onClick={() => router.push("/teacher/marks")}
-        >
-          Upload Marks
-        </button>
-        <button
-          className="block md:inline text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
-          onClick={() => router.push("/teacher/show-marks")}
-        >
-          Show Marks
-        </button>
-        <button
-          className="block md:inline text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
-          onClick={() => router.push("/teacher/subjects")}
-        >
-          Subjects
-        </button>
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/teacher/announcements")}
+          >
+            Announcements
+          </button>
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/teacher/announcements/add")}
+          >
+            Add Announcement
+          </button>
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/teacher/marks")}
+          >
+            Upload Marks
+          </button>
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/teacher/show-marks")}
+          >
+            Show Marks
+          </button>
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/teacher/subjects")}
+          >
+            Subjects
+          </button>
+        </div>
       </div>
     </div>
   );

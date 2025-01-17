@@ -32,7 +32,7 @@ export default function AcceptedRequestsToTeachPage() {
 
   const handleLeaveMeeting = async (id : string) => {
     try {
-      const res = await axios.patch(`https://college-compus.vercel.app/api/study-requests/accepted-requests-to-teach${id}`,);
+      const res = await axios.patch(`https://college-compus.vercel.app/api/study-requests/accepted-requests-to-teach/${id}`,);
 
       if (res.status === 200) {
         router.push("/study-requests");

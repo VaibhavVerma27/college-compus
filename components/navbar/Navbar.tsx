@@ -12,19 +12,34 @@ const Navbar = ({}) => {
   const router = useRouter();
   const session= useSession();
 
+
+  if (!session.data) {
+    return (
+      <div className="bg-black text-white p-4 sticky top-0 z-10 border-b-2 border-blue-500">
+        <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
+          <div className="flex flex-row px-8 items-center gap-3">
+            <Logo/>
+          </div>
+          <UserMenu handleNavigate={() => {
+          }}/>
+        </div>
+      </div>
+    )
+  }
+
   if (session.data && !session.data.user.isStudent) {
     if (session.data.user.isAdmin) {
       return (
-        <AdminNavbar />
+        <AdminNavbar/>
       )
     } else if (session.data.user.isTeacher) {
       return (
-        <TeacherNavbar />
+        <TeacherNavbar/>
       )
     } else {
       return (
         <div className="bg-black text-white p-4 sticky top-0 z-10 border-b-2 border-blue-500">
-          <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
+        <div className="flex flex-row items-center justify-between gap-3 md:gap-0">
             <div className="flex flex-row px-8 items-center gap-3">
               <Logo/>
             </div>

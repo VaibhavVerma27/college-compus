@@ -2,7 +2,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import axios from "axios";
-import { useModel } from "../../../hooks/user-model-store";
+import { useModel } from "@/hooks/user-model-store";
 import DotsLoader from "../../../components/loading/dotLoader";
 
 export default function ClubsPage() {

@@ -4,7 +4,7 @@ import Logo from "./Logo";
 import UserMenu from "./UserMenu";
 import { useRouter } from "next/navigation";
 
-const NavbarAdmin: React.FC = () => {
+const NavbarAdmin = () => {
   const router = useRouter();
 
   return (
@@ -14,63 +14,65 @@ const NavbarAdmin: React.FC = () => {
         <div className="flex items-center gap-3">
           <Logo />
         </div>
-        <div className="">
+        <div>
           <UserMenu handleNavigate={() => {}} />
         </div>
       </div>
 
       {/* Menu Items */}
-      <div
-        className={`block mt-4 md:flex md:gap-6 md:items-center justify-evenly text-lg font-archivo`}
-      >
-        <button
-          className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
-          onClick={() => router.push("/admin/announcements")}
+      <div className="mt-4 overflow-x-auto md:overflow-visible">
+        <div
+          className={`flex gap-4 text-lg font-archivo whitespace-nowrap md:flex-wrap md:justify-evenly`}
         >
-          Announcements
-        </button>
-        <button
-          className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
-          onClick={() => router.push("/admin/announcements/add")}
-        >
-          Add Announcement
-        </button>
-        <button
-          className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
-          onClick={() => router.push("/admin/clubs")}
-        >
-          Clubs
-        </button>
-        <button
-          className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
-          onClick={() => router.push("/admin/clubs/add-club")}
-        >
-          Add Club
-        </button>
-        <button
-          className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
-          onClick={() => router.push("/admin/subjects/students")}
-        >
-          Student Subjects
-        </button>
-        <button
-          className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
-          onClick={() => router.push("/admin/subjects/teachers")}
-        >
-          Teacher Subjects
-        </button>
-        <button
-          className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
-          onClick={() => router.push("/admin/user/make-admin")}
-        >
-          Make Admin
-        </button>
-        <button
-          className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
-          onClick={() => router.push("/admin/user/make-teacher")}
-        >
-          Make Teacher
-        </button>
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/admin/announcements")}
+          >
+            Announcements
+          </button>
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/admin/announcements/add")}
+          >
+            Add Announcement
+          </button>
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/admin/clubs")}
+          >
+            Clubs
+          </button>
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/admin/clubs/add-club")}
+          >
+            Add Club
+          </button>
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/admin/subjects/students")}
+          >
+            Student Subjects
+          </button>
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/admin/subjects/teachers")}
+          >
+            Teacher Subjects
+          </button>
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/admin/user/make-admin")}
+          >
+            Make Admin
+          </button>
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/admin/user/make-teacher")}
+          >
+            Make Teacher
+          </button>
+        </div>
       </div>
     </div>
   );
