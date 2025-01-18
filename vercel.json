@@ -1,9 +1,9 @@
 {
   "functions": {
-    "app/api/verify-sid/route.ts": {
+    "api/verify-sid": {
       "maxDuration": 60
     },
-    "app/api/teacher/marks/route.ts": {
+    "api/teacher/marks": {
       "maxDuration": 60
     }
   }
