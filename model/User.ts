@@ -73,7 +73,6 @@ const UserSchema: Schema<User> = new Schema({
 
 UserSchema.post("save", async function (this: User) {
     if (this.isStudent) {
-        
         try {
             const existingStudent = await StudentModel.findOne({ user_id: this._id });
             if (existingStudent) {
@@ -538,6 +537,37 @@ const TeacherAnnouncementSchema: Schema<TeacherAnnouncement> = new Schema({
     subjectCode: { type: String, required: true }
 }, {timestamps: true});
 
+
+export interface ClassSchedule extends Document {
+    branch: string;
+    semester: number;
+    year: number;
+    timeTable: {
+        day: string;
+        classes: {
+            startTime: number;
+            endTime: number;
+            subjectId: string;
+        }[];
+    }[];
+}
+
+const ClassScheduleSchema: Schema<ClassSchedule> = new Schema({
+    branch: { type: String, required: true },
+    semester: { type: Number, required: true },
+    year: { type: Number, required: true },
+    timeTable: [ {
+        day: { type: String, required: true },
+        classes: [ {
+            startTime: { type: Number, required: true },
+            endTime: { type: Number, required: true },
+            subjectId: { type: String, required: true },
+        } ]
+    } ]
+})
+
+
+
 const AnnouncementModel: Model<Announcement> = 
     mongoose.models.Announcement || mongoose.model<Announcement>("Announcement", AnnouncementModelSchema)
 
@@ -589,6 +619,9 @@ const RequestToTeachModel: Model<RequestToTeach> =
 const AcceptedStudyRequestModel: Model<AcceptedStudyRequest> =
     mongoose.models.AcceptedStudyRequest || mongoose.model<AcceptedStudyRequest>("AcceptedStudyRequest", AcceptedStudyRequestSchema);
 
+const ClassScheduleModel: Model<ClassSchedule> =
+    mongoose.models.ClassSchedule || mongoose.model<ClassSchedule>("ClassSchedule", ClassScheduleSchema);
+
 export {
     TeacherAnnouncementModel,
     UserModel,
@@ -607,4 +640,5 @@ export {
     RequestToTeachModel,
     AcceptedStudyRequestModel,
     AnnouncementModel,
+    ClassScheduleModel,
 };

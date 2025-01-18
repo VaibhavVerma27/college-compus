@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import extractTextFromImageLinks from "../../../../lib/sidVerification";
-import { StudentModel, UserModel } from "@/model/User";
+import {ClubModel, StudentModel, UserModel} from "@/model/User";
 import dbConnect from "../../../../lib/connectDb";
 import Groq from 'groq-sdk';
 
@@ -171,6 +171,43 @@ export async function POST(request: NextRequest) {
     if (extractedInfo.department) student.branch = extractedInfo.department;
     student.student_id = extractedInfo.identityNo;
     user.sid_verification = true;
+
+    const clubsMember = await ClubModel.aggregate([
+      {
+        $match: {
+          clubMembers: extractedInfo.identityNo
+        }
+      }
+    ])
+
+    if (!clubsMember) {
+      return NextResponse.json(
+        {error: "failed to fetch clubs where student is member"},
+        {status: 500}
+      )
+    }
+
+    const clubsHead = await ClubModel.aggregate([
+      {
+        $match: {
+          clubIdSecs: extractedInfo.identityNo
+        }
+      }
+    ])
+
+    if (!clubsHead) {
+      return NextResponse.json(
+        {error: "failed to fetch clubs where student is member"},
+        {status: 500}
+      )
+    }
+
+    const clubsPartOf = clubsMember.map((club) => club._id);
+    const clubsHeadOf = clubsHead.map((club) => club._id);
+
+    student.clubsPartOf = clubsPartOf;
+    student.clubsHeadOf = clubsHeadOf;
+
 
     await Promise.all([
       student.save(),
