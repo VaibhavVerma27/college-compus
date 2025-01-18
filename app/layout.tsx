@@ -3,12 +3,13 @@
 import localFont from "next/font/local";
 import "./globals.css";
 import "leaflet/dist/leaflet.css";
-import { Toaster } from "../components/ui/toaster";
+import { Toaster } from "@components/ui/toaster";
 import AuthProvider from "../context/AuthProvider";
 import FloatingChatbot from "../components/chatBot/chatBot";
 import Navbar from "@/components/navbar/Navbar";
 import ClientOnly from "@/components/ClientOnly";
 import { usePathname } from "next/navigation";
+import {SpeedInsights} from "@vercel/speed-insights/next";
 
 const ArchivoBlack = localFont({
   src: "./fonts/ArchivoBlack-Regular.ttf",
@@ -46,6 +47,7 @@ export default function RootLayout({
           {children}
           <FloatingChatbot />
           <Toaster />
+          <SpeedInsights />
         </body>
       </AuthProvider>
     </html>
