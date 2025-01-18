@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import extractTextFromImageLinks, { extractDetails } from "../../../../lib/sidVerification";
+import extractTextFromImageLinks from "../../../../lib/sidVerification";
 import { StudentModel, UserModel } from "../../../../model/User";
 import dbConnect from "../../../../lib/connectDb";
 import Groq from 'groq-sdk';
@@ -8,34 +8,101 @@ const groqClient = new Groq({
   apiKey: process.env.GROQ_API_KEY,
 });
 
-const extractNameFromEmail = (email: string | undefined): string | null => {
-  if (!email) {
-    return null;
-  }
+interface ExtractedInfo {
+  name: string | null;
+  department: string | null;
+  identityNo: string | null;
+  emailNameMatch: boolean;
+  correctedName: string | null;
+}
 
-  const match = email.match(/^([a-zA-Z]+)\.bt\d+([a-z]+)@pec\.edu\.in$/);
-  return match ? match[1] : null;
+const cleanAndParseJSON = (content: string): any => {
+  try {
+    // First try direct parsing
+    return JSON.parse(content);
+  } catch (e) {
+    try {
+      // Try to extract JSON if it's wrapped in other text
+      const jsonMatch = content.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        return JSON.parse(jsonMatch[0]);
+      }
+    } catch (e) {
+      console.error('Failed to parse JSON from content:', content);
+      return null;
+    }
+  }
+  return null;
 };
 
-// // // const correctNamefromEmail = async (email: string | undefined): Promise<string | null> => {
-// //   const prompt = `I am going to give you an email, from that email you have to return me the name of the person. The email is in the format: name.btxxxxx@pec.edu.in. So for example for an email antrikshgupta.bt23cseds@pec.edu.in, you have the return me the name as Antriksh Gupta. and send no other text, just the name in correct format, ${email}`
-// //   const completion = await groqClient.chat.completions.create({
-// //     messages: [{role:"user",content: prompt}],
-// //     model: 'llama3-70b-8192'
-// //   });
-//   return completion.choices[0]?.message?.content;
-// }
+export const extractAllDetails = async (text: string, email: string): Promise<ExtractedInfo> => {
+  if (!text || typeof text !== 'string') {
+    console.error('Invalid text input:', text);
+    return {
+      name: null,
+      department: null,
+      identityNo: null,
+      emailNameMatch: false,
+      correctedName: null
+    };
+  }
 
-const aiNameChecker = async (emailName: string, name: string): Promise<boolean> => {
-  const prompt = `I am going to give you two string, you have to tell me if they are same or not. \n\nString 1: ${emailName} \nString 2: ${name} \n\nAre these strings same? They dont have to be exactly equal. String like antriikshguppta and Antriksh Gupta are considered Same. One of the strings is coming from an OCR, so its expected to have some mistakes in reading. Your work is to overlook these mistakes and tell me by your thinking whether they are same names or not.\n\nPlease type yes or no and dont type any other text. just yes or no.`;
+  const emailName = email.match(/^([a-zA-Z]+)\.bt\d+([a-z]+)@pec\.edu\.in$/)?.[1] ?? null;
 
-  const completion = await groqClient.chat.completions.create({
-    messages: [{ role: 'user', content: prompt }],
-    model: 'llama3-8b-8192',
-  });
-
-  return completion.choices[0]?.message?.content === 'yes';
+  const prompt = `Analyze the following OCR text and email. You must respond with a valid JSON object and nothing else. The response should look exactly like this:
+{
+  "studentId": "(extracted student ID number)",
+  "name": "(extracted full name from OCR text)",
+  "department": "(extracted department name)",
+  "emailNameMatch": (true/false based on comparing "${emailName}" with extracted name),
+  "correctedName": "(proper capitalized name from ${email})"
 }
+
+OCR Text: "${text}"
+
+Remember: Return ONLY the JSON object, no other text. Use null for any missing values.`;
+
+  try {
+    const completion = await groqClient.chat.completions.create({
+      messages: [{ role: 'user', content: prompt }],
+      model: 'llama3-70b-8192',
+      temperature: 0.1,
+      max_tokens: 500,
+      top_p: 1,
+      stream: false,
+    });
+
+    const content = completion.choices[0]?.message?.content;
+    console.log('Raw GROQ response:', content); // Debug log
+
+    if (!content) {
+      throw new Error('Empty response from GROQ');
+    }
+
+    const result = cleanAndParseJSON(content);
+    
+    if (!result) {
+      throw new Error('Failed to parse GROQ response');
+    }
+
+    return {
+      name: result.name || null,
+      department: result.department || null,
+      identityNo: result.studentId || null,
+      emailNameMatch: Boolean(result.emailNameMatch),
+      correctedName: result.correctedName || null
+    };
+  } catch (error) {
+    console.error('Error in extractAllDetails:', error);
+    return {
+      name: null,
+      department: null,
+      identityNo: null,
+      emailNameMatch: false,
+      correctedName: null
+    };
+  }
+};
 
 export async function POST(request: NextRequest) {
   console.log("Processing SID verification request");
@@ -44,7 +111,7 @@ export async function POST(request: NextRequest) {
   try {
     const { username, image } = await request.json();
 
-    if (!username || typeof username !== 'string' || !image || typeof image !== 'string') {
+    if (!username || !image) {
       return NextResponse.json(
         { success: false, message: 'Invalid username or image data' },
         { status: 400 }
@@ -52,7 +119,7 @@ export async function POST(request: NextRequest) {
     }
 
     const [user, student] = await Promise.all([
-      UserModel.findOne({ username: username }),
+      UserModel.findOne({ username }),
       StudentModel.findOne({ name: username })
     ]);
 
@@ -72,9 +139,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const imageLinks = [image];
-    const results = await extractTextFromImageLinks(imageLinks);
-
+    const results = await extractTextFromImageLinks([image]);
+    console.log('Extracted OCR text:', results[image]); // Debug log
+    
     if (!results[image]) {
       user.sid_verification = false;
       await user.save();
@@ -84,75 +151,44 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { name, department, identityNo } = await extractDetails(results[image]);
-
-    if (!name || !identityNo) {
-      console.log("Failed to extract required details:", { name, identityNo });
+    const extractedInfo = await extractAllDetails(results[image], student.email as string);
+    console.log('Extracted info:', extractedInfo); // Debug log
+    
+    if (!extractedInfo.name || !extractedInfo.identityNo || !extractedInfo.emailNameMatch) {
+      console.log("Failed to extract or verify details:", extractedInfo);
       user.sid_verification = false;
       await user.save();
       return NextResponse.json(
-        { success: false, message: 'Failed to extract required details from image' },
+        { success: false, message: 'Failed to extract or verify details from image' },
         { status: 400 }
       );
     }
 
-    const emailName = extractNameFromEmail(student.email as string);
-    if (!emailName) {
-      return NextResponse.json(
-        { success: false, message: 'Invalid email format' },
-        { status: 400 }
-      );
-    }
+    student.name = extractedInfo.correctedName ?? extractedInfo.name;
+    student.sid_verification = true;
+    if (extractedInfo.department) student.branch = extractedInfo.department;
+    student.student_id = extractedInfo.identityNo;
+    user.sid_verification = true;
 
-    try {
-      const namesMatch = await aiNameChecker(emailName, name);
-      if (!namesMatch) {
-        user.sid_verification = false;
-        await user.save();
-        console.log("Name mismatch between email and extracted text:", { emailName, name });
-        return NextResponse.json(
-          { success: false, message: 'Name mismatch between email and extracted text' },
-          { status: 400 }
-        );
-      }
-    } catch (error) {
-      console.error('Error in name verification:', error);
-      return NextResponse.json(
-        { success: false, message: 'Error during name verification' },
-        { status: 500 }
-      );
-    }
+    await Promise.all([
+      student.save(),
+      user.save()
+    ]);
 
-    try {
-      // const correctedName = await correctNamefromEmail(user.email);
-      student.name = name;
-      student.sid_verification = true;
-      if (department) student.branch = department; // Only update branch if department was extracted
-      student.student_id = identityNo;
-      user.sid_verification = true;
-
-      await Promise.all([
-        student.save(),
-        user.save()
-      ]);
-
-      return NextResponse.json({
-        success: true,
-        message: 'SID verification completed',
-        data: { name, department, identityNo },
-      });
-    } catch (error) {
-      console.error('Error saving updates:', error);
-      return NextResponse.json(
-        { success: false, message: 'Error saving verification data' },
-        { status: 500 }
-      );
-    }
+    return NextResponse.json({
+      success: true,
+      message: 'SID verification completed',
+      data: {
+        name: extractedInfo.name,
+        department: extractedInfo.department,
+        identityNo: extractedInfo.identityNo
+      },
+    });
 
   } catch (error) {
     console.error('Error verifying user:', error);
     return NextResponse.json(
-      { success: false, message: 'Internal server error during verification Try with a new and more clear image.' },
+      { success: false, message: 'Internal server error during verification. Try with a new and more clear image.' },
       { status: 500 }
     );
   }
