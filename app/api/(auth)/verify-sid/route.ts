@@ -37,7 +37,7 @@ const cleanAndParseJSON = (content: string): any => {
   return null;
 };
 
-export const extractAllDetails = async (text: string, email: string): Promise<ExtractedInfo> => {
+const extractAllDetails = async (text: string, email: string): Promise<ExtractedInfo> => {
   if (!text) {
     console.error('Invalid text input:', text);
     return {
