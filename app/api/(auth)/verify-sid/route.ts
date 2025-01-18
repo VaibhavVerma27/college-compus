@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import extractTextFromImageLinks from "../../../../lib/sidVerification";
-import { StudentModel, UserModel } from "../../../../model/User";
+import { StudentModel, UserModel } from "@/model/User";
 import dbConnect from "../../../../lib/connectDb";
 import Groq from 'groq-sdk';
 
@@ -20,7 +20,8 @@ const cleanAndParseJSON = (content: string): any => {
   try {
     // First try direct parsing
     return JSON.parse(content);
-  } catch (e) {
+  } catch (err) {
+    console.error(err);
     try {
       // Try to extract JSON if it's wrapped in other text
       const jsonMatch = content.match(/\{[\s\S]*\}/);
@@ -28,6 +29,7 @@ const cleanAndParseJSON = (content: string): any => {
         return JSON.parse(jsonMatch[0]);
       }
     } catch (e) {
+      console.error(e);
       console.error('Failed to parse JSON from content:', content);
       return null;
     }
@@ -36,7 +38,7 @@ const cleanAndParseJSON = (content: string): any => {
 };
 
 export const extractAllDetails = async (text: string, email: string): Promise<ExtractedInfo> => {
-  if (!text || typeof text !== 'string') {
+  if (!text) {
     console.error('Invalid text input:', text);
     return {
       name: null,
