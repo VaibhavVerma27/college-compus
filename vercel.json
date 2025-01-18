@@ -1,9 +1,9 @@
 {
   "functions": {
-    "api/verify-sid*": {
+    "/api/verify-sid*": {
       "maxDuration": 60
     },
-    "api/teacher/marks*": {
+    "/api/teacher/marks*": {
       "maxDuration": 60
     }
   }
