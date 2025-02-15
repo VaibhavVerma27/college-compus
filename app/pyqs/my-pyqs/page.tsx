@@ -68,7 +68,7 @@ export default function MyPyqPage() {
         </button>
         <button
           className="bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-lg font-semibold"
-          onClick={() => router.push("/add-pyq")}
+          onClick={() => router.push("/pyqs/add")}
         >
           Add PYQ
         </button>
