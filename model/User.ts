@@ -579,7 +579,7 @@ const PyqSchema = new Schema<Pyq>({
     subjectCode: { type: String, required: true },
     year: { type: Number, required: true },
     papers: [{ type: String, required: true }],
-    author: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    author: { type: Schema.Types.ObjectId, ref: "Student", required: true },
 })
 
 const PyqModel: Model<Pyq> =
