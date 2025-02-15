@@ -208,7 +208,6 @@ export async function POST(request: NextRequest) {
     student.clubsPartOf = clubsPartOf;
     student.clubsHeadOf = clubsHeadOf;
 
-
     await Promise.all([
       student.save(),
       user.save()

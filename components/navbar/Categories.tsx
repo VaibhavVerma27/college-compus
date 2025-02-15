@@ -26,6 +26,9 @@ export const categories = [
   },
   {
     label: "Resources"
+  },
+  {
+    label: "Pyq"
   }
 ];
 

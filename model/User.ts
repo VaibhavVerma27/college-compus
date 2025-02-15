@@ -566,7 +566,24 @@ const ClassScheduleSchema: Schema<ClassSchedule> = new Schema({
     } ]
 })
 
+export interface Pyq extends Document {
+    subjectName: string;
+    subjectCode: string;
+    year: number;
+    papers: string[];
+    author: mongoose.Schema.Types.ObjectId;
+}
 
+const PyqSchema = new Schema<Pyq>({
+    subjectName: { type: String, required: true },
+    subjectCode: { type: String, required: true },
+    year: { type: Number, required: true },
+    papers: [{ type: String, required: true }],
+    author: { type: Schema.Types.ObjectId, ref: "User", required: true },
+})
+
+const PyqModel: Model<Pyq> =
+    mongoose.models.Pyq || mongoose.model<Pyq>('Pyq', PyqSchema);
 
 const AnnouncementModel: Model<Announcement> = 
     mongoose.models.Announcement || mongoose.model<Announcement>("Announcement", AnnouncementModelSchema)
@@ -623,6 +640,7 @@ const ClassScheduleModel: Model<ClassSchedule> =
     mongoose.models.ClassSchedule || mongoose.model<ClassSchedule>("ClassSchedule", ClassScheduleSchema);
 
 export {
+    PyqModel,
     TeacherAnnouncementModel,
     UserModel,
     StudentModel,
