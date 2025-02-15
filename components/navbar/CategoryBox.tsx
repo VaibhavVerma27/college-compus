@@ -33,6 +33,8 @@ const CategoryBox: React.FC<CategoryBoxProps> = ({
     }
     else if (lowerCaseLabel === "home") {
       url = `/`;
+    } else if (lowerCaseLabel === "pyqs") {
+      url = "/pyqs";
     }
 
     if (url) {

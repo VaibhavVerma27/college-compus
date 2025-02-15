@@ -22,6 +22,10 @@ interface Pyq {
 export default function PyqPage() {
   const [pyqs, setPyqs] = useState<Pyq[] | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [search, setSearch] = useState("");
+  const [filterYear, setFilterYear] = useState("");
+  const [filterSubject, setFilterSubject] = useState("");
+  const [filterCode, setFilterCode] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -44,8 +48,17 @@ export default function PyqPage() {
     fetchPyqs();
   }, []);
 
+  const filteredPyqs = pyqs?.filter((pyq) => {
+    return (
+      (search === "" || pyq.subjectName.toLowerCase().includes(search.toLowerCase())) &&
+      (filterYear === "" || pyq.year.toString() === filterYear) &&
+      (filterSubject === "" || pyq.subjectName.toLowerCase().includes(filterSubject.toLowerCase())) &&
+      (filterCode === "" || pyq.subjectCode.toLowerCase().includes(filterCode.toLowerCase()))
+    );
+  });
+
   if (loading || !pyqs) {
-    return <DotsLoader />
+    return <DotsLoader />;
   }
 
   return (
@@ -66,14 +79,48 @@ export default function PyqPage() {
         </button>
       </div>
 
+      {/* Search and Filters */}
+      <div className="max-w-4xl mx-auto mt-6 p-4 bg-gray-800 rounded-lg shadow-lg">
+        <input
+          type="text"
+          placeholder="Search by Subject Name"
+          className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <div className="flex gap-4 mt-4">
+          <input
+            type="number"
+            placeholder="Filter by Year"
+            className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={filterYear}
+            onChange={(e) => setFilterYear(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Filter by Subject Name"
+            className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={filterSubject}
+            onChange={(e) => setFilterSubject(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Filter by Subject Code"
+            className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            value={filterCode}
+            onChange={(e) => setFilterCode(e.target.value)}
+          />
+        </div>
+      </div>
+
       {/* PYQ List */}
-      <div className="max-w-4xl mx-auto mt-10 p-6 bg-gray-800 rounded-lg shadow-lg">
+      <div className="max-w-4xl mx-auto mt-6 p-6 bg-gray-800 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold text-center">Previous Year Questions</h1>
-        {pyqs.length === 0 ? (
+        {filteredPyqs?.length === 0 ? (
           <p className="text-gray-400 text-center mt-6">No PYQs available.</p>
         ) : (
           <div className="mt-6 space-y-6">
-            {pyqs.map((pyq) => (
+            {filteredPyqs?.map((pyq) => (
               <div key={pyq._id.toString()} className="bg-gray-700 p-4 rounded-lg">
                 <h2 className="text-xl font-semibold">{pyq.subjectName} ({pyq.subjectCode})</h2>
                 <p className="text-gray-400">Year: {pyq.year}</p>
