@@ -32,7 +32,7 @@ export default function PyqPage() {
     async function fetchPyqs() {
       setLoading(true);
       try {
-        const res = await axios.get("/api/pyq");
+        const res = await axios.get("/api/pyqs");
         if (res.status === 200) {
           setPyqs(res.data);
         } else {
