@@ -33,6 +33,9 @@ export async function GET() {
             }
           ]
         }
+      },
+      {
+        $unwind: "$author"
       }
     ])
 

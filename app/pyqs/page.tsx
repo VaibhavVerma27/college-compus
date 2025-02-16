@@ -24,7 +24,6 @@ export default function PyqPage() {
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState("");
   const [filterYear, setFilterYear] = useState("");
-  const [filterSubject, setFilterSubject] = useState("");
   const [filterCode, setFilterCode] = useState("");
   const router = useRouter();
 
@@ -51,8 +50,7 @@ export default function PyqPage() {
   const filteredPyqs = pyqs?.filter((pyq) => {
     return (
       (search === "" || pyq.subjectName.toLowerCase().includes(search.toLowerCase())) &&
-      (filterYear === "" || pyq.year.toString() === filterYear) &&
-      (filterSubject === "" || pyq.subjectName.toLowerCase().includes(filterSubject.toLowerCase())) &&
+      (filterYear === "" || pyq.year.toString().includes(filterYear)) &&
       (filterCode === "" || pyq.subjectCode.toLowerCase().includes(filterCode.toLowerCase()))
     );
   });
@@ -64,49 +62,43 @@ export default function PyqPage() {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Navbar */}
-      <div className="w-full py-4 bg-gray-950 shadow-lg flex justify-center gap-6">
+      <div className="w-full py-4 bg-gray-950 shadow-md flex justify-center gap-6">
         <button
-          className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg font-semibold"
-          onClick={() => router.push("/pyqs")}
-        >
-          PYQ
-        </button>
-        <button
-          className="bg-green-600 hover:bg-green-700 text-white py-2 px-6 rounded-lg font-semibold"
+          className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-6 rounded-lg font-semibold transition"
           onClick={() => router.push("/pyqs/my-pyqs")}
         >
-          My PYQ
+          📜 My PYQS
+        </button>
+        <button
+          className="bg-purple-600 hover:bg-purple-700 text-white py-2 px-6 rounded-lg font-semibold transition"
+          onClick={() => router.push("/pyqs/add")}
+        >
+          ➕ Add PYQ
         </button>
       </div>
 
       {/* Search and Filters */}
-      <div className="max-w-4xl mx-auto mt-6 p-4 bg-gray-800 rounded-lg shadow-lg">
+      <div className="max-w-4xl mx-auto mt-6 p-6 bg-gray-800 rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold mb-4 text-center">Search & Filters</h2>
         <input
           type="text"
           placeholder="Search by Subject Name"
-          className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <div className="flex gap-4 mt-4">
+        <div className="flex flex-col sm:flex-row gap-4 mt-4">
           <input
             type="number"
             placeholder="Filter by Year"
-            className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={filterYear}
             onChange={(e) => setFilterYear(e.target.value)}
           />
           <input
             type="text"
-            placeholder="Filter by Subject Name"
-            className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={filterSubject}
-            onChange={(e) => setFilterSubject(e.target.value)}
-          />
-          <input
-            type="text"
             placeholder="Filter by Subject Code"
-            className="w-full px-4 py-2 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
             value={filterCode}
             onChange={(e) => setFilterCode(e.target.value)}
           />
@@ -115,16 +107,16 @@ export default function PyqPage() {
 
       {/* PYQ List */}
       <div className="max-w-4xl mx-auto mt-6 p-6 bg-gray-800 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-center">Previous Year Questions</h1>
+        <h1 className="text-3xl font-bold text-center text-yellow-400">Previous Year Questions</h1>
         {filteredPyqs?.length === 0 ? (
           <p className="text-gray-400 text-center mt-6">No PYQs available.</p>
         ) : (
-          <div className="mt-6 space-y-6">
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
             {filteredPyqs?.map((pyq) => (
-              <div key={pyq._id.toString()} className="bg-gray-700 p-4 rounded-lg">
-                <h2 className="text-xl font-semibold">{pyq.subjectName} ({pyq.subjectCode})</h2>
-                <p className="text-gray-400">Year: {pyq.year}</p>
-                <p className="text-gray-400">Author: {pyq.author.name} ({pyq.author.student_id})</p>
+              <div key={pyq._id.toString()} className="bg-gray-700 p-6 rounded-lg shadow-md border border-gray-600 transition-transform transform hover:scale-105">
+                <h2 className="text-xl font-semibold text-blue-400">{pyq.subjectName} ({pyq.subjectCode})</h2>
+                <p className="text-gray-300">Year: <span className="text-yellow-400">{pyq.year}</span></p>
+                <p className="text-gray-300">Author: <span className="font-medium">{pyq.author.name}</span> ({pyq.author.student_id})</p>
                 <div className="mt-2 flex flex-wrap gap-2">
                   {pyq.papers.map((paper, index) => (
                     <a
@@ -132,7 +124,7 @@ export default function PyqPage() {
                       href={paper}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded"
+                      className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition duration-200"
                     >
                       Paper {index + 1}
                     </a>

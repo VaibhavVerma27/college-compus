@@ -38,10 +38,8 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
     }
 
     const pyq = await PyqModel.findOne({
-      where: {
-        id: ObjectId,
-        author: userId
-      }
+      _id: ObjectId,
+      author: userId
     })
 
     if (!pyq) {
@@ -101,10 +99,8 @@ export async function PATCH(req: Request, { params }: { params: Promise<{ id: st
     }
 
     const pyq = await PyqModel.updateOne({
-        where: {
-          id: ObjectId,
-          author: userId
-        }
+        _id: ObjectId,
+        author: userId
       },
       {
         subjectName,
@@ -161,10 +157,8 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     }
 
     const pyq = await PyqModel.deleteOne({
-      where: {
-        id: ObjectId,
+        _id: ObjectId,
         author: userId
-      }
     })
 
     if (!pyq) {
