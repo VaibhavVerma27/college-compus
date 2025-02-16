@@ -22,6 +22,7 @@ export async function GET() {
     const userId = new mongoose.Types.ObjectId(user._id);
     const student = await StudentModel.findOne({ user_id: userId }).populate({
       path: "interestedEvents",
+      match: { eventTime: { $gte: new Date() } },
       select: "heading eventVenue eventCoordinates",
     });
 
