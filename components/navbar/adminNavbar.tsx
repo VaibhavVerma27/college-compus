@@ -62,6 +62,13 @@ const NavbarAdmin = () => {
           </button>
           <button
             className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
+            onClick={() => router.push("/admin/pyqs")}
+          >
+            PYQS
+          </button>
+
+          <button
+            className="text-blue-500 font-extrabold hover:text-gray-500 py-2 px-4 rounded"
             onClick={() => router.push("/admin/user/make-admin")}
           >
             Make Admin
