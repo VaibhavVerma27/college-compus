@@ -24,7 +24,6 @@ export default function AdminPyqPage() {
   const [search, setSearch] = useState("");
   const [selectedPyq, setSelectedPyq] = useState<Pyq | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const router = useRouter();
 
   useEffect(() => {
     async function fetchPyqs() {
