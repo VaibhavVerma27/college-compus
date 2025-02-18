@@ -17,6 +17,7 @@ function UserMenu({handleNavigate}) {
 
   const handleSignOut = async () => {
     await signOut({ redirect: false }); // Prevent NextAuth's default redirect
+    localStorage.removeItem('studentId');
     router.push('/sign-in'); // Redirect to sign-in page after signout completes
   };
 
