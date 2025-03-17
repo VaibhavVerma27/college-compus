@@ -302,7 +302,40 @@ interface EventCoordinates {
 }
 
 
+interface User {
+    _id: mongoose.Types.ObjectId;
+    name: string;
+    profile: string;
+    student_id: string;
+    semester: number;
+    branch: string;
+    friends: {
+        _id: mongoose.Types.ObjectId;
+        name: string;
+        profile: string;
+        student_id: string;
+    }[];
+    clubsPartOf: {
+        _id: mongoose.Types.ObjectId;
+        clubName: string;
+        clubLogo: string
+    }[];
+    clubsHeadOf: {
+        _id: mongoose.Types.ObjectId;
+        clubName: string;
+        clubLogo: string
+    }[];
+    interestedEvents: {
+        _id: mongoose.Types.ObjectId;
+        eventVenue: string;
+        eventTime: Date,
+        heading: string;
+    }[]
+}
+
+
 interface ModelStore {
+    user: User|null;
     eventCoordinates: EventCoordinates;
     acceptedRequestsToTeach: AcceptedRequestToTeach[]|[];
     acceptedRequests: AcceptedRequest[]|[];
@@ -327,6 +360,7 @@ interface ModelStore {
     allEvents: Event[];
     singleEvent:SingleEvent|null;
     isLoading: boolean;
+    setUser: (user: User) => void;
     setEventCoordinates: (eventCoordinates: EventCoordinates) => void;
     setAcceptedRequestsToTeach: (acceptedRequestsToTeach: AcceptedRequestToTeach[]) => void;
     setAcceptedRequests: (acceptedRequests: AcceptedRequest[]) => void;
@@ -354,6 +388,7 @@ interface ModelStore {
 }
 
 export const useModel = create<ModelStore>((set) => ({
+    user: null,
     eventCoordinates: {lat: 30.7649, lng: 76.7868},
     acceptedRequestsToTeach: [],
     acceptedRequests: [],
@@ -378,6 +413,7 @@ export const useModel = create<ModelStore>((set) => ({
     editClub:null,
     profile: null,
     isLoading: false,
+    setUser: (user) => set({user}),
     setEventCoordinates: ((eventCoordinates) => set({eventCoordinates})),
     setAcceptedRequestsToTeach: ((acceptedRequestsToTeach) => set({acceptedRequestsToTeach})),
     setAcceptedRequests: ((acceptedRequests) => set({acceptedRequests})),

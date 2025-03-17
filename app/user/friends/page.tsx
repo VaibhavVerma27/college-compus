@@ -1,10 +1,11 @@
 "use client"
 import {useEffect, useState} from "react";
 import axios from "axios";
-import {useModel} from "../../../hooks/user-model-store";
+import {useModel} from "@/hooks/user-model-store";
 import {useRouter} from "next/navigation";
 import DotsLoader from "../../../components/loading/dotLoader";
 import mongoose from "mongoose";
+import Link from "next/link";
 export default function FriendsPage() {
   const [showPopup, setShowPopup] = useState<boolean>(false);
   const [selectedFriend, setSelectedFriend] = useState<{ _id: mongoose.Types.ObjectId, name: string, student_id: string, profile: string }|null>(null);
@@ -85,7 +86,7 @@ export default function FriendsPage() {
                     className="w-16 h-16 rounded-full object-cover border-2 border-blue-500"
                   />
                   <div>
-                    <div className="text-lg font-semibold text-white">{friend.name}</div>
+                    <Link href={`/user/${friend._id}`} className="text-lg font-semibold text-white">{friend.name}</Link>
                     <div className="text-sm text-gray-400">{friend.student_id}</div>
                   </div>
                 </div>
